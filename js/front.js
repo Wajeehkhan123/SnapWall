@@ -43,9 +43,13 @@ $(document).ready(function () {
     // Sidebar Functionality
     // ------------------------------------------------------ //
     $('#toggle-btn').on('click', function (e) {
+		
         e.preventDefault();
         $(this).toggleClass('active');
 
+		$('#side-navbar').animate({
+			width: 'toggle'
+		},2000);
         $('.side-navbar').toggleClass('shrinked');
         $('.content-inner').toggleClass('active');
         $(document).trigger('sidebarChanged');
