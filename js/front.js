@@ -12,6 +12,23 @@ $(document).ready(function () {
     $('.dismiss').on('click', function () {
         $('.search-box').fadeOut();
     });
+	
+	// ------------------------------------------------------ //
+	// Users DataTable
+	// ------------------------------------------------------ //
+	$('#users').DataTable( {
+		 responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ],
+        order: [ 1, 'asc' ]
+    } );
 
     // ------------------------------------------------------- //
     // Card Close
