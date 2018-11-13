@@ -13,22 +13,81 @@ $(document).ready(function () {
         $('.search-box').fadeOut();
     });
 	
+	$('#details').hide();
+	
 	// ------------------------------------------------------ //
 	// Users DataTable
 	// ------------------------------------------------------ //
-	$('#users').DataTable( {
+	var table = $('#users').DataTable( {
 		 responsive: {
             details: {
                 type: 'column'
             }
         },
-        columnDefs: [ {
+        columnDefs: 
+		[ 
+		{
             className: 'control',
             orderable: false,
             targets:   0
-        } ],
+        }/*,
+		{
+            targets: [ 4 ],
+            visible: false,
+            searchable: false
+        },
+		{
+            targets: [ 5 ],
+            visible: false,
+            searchable: false
+        },
+		{
+            targets: [ 6 ],
+            visible: false,
+            searchable: false
+        },
+		{
+            targets: [ 7 ],
+            visible: false,
+            searchable: false
+        },
+		{
+            targets: [ 8 ],
+            visible: false,
+            searchable: false
+        },
+		{
+            targets: [ 9 ],
+            visible: false,
+            searchable: false
+        }*/
+		],
         order: [ 1, 'asc' ]
+		
     } );
+	
+	$('#users tbody').on('click', 'tr', function () {
+        var data = table.row( this ).data();
+		var name = data[1];
+		var pno = data[2];
+		var email = data[3];
+		
+		$('#datatable').hide();
+		$('#details').show();
+		
+		$('#uname').text(name);
+		$('#upno').text(pno);
+		$('#uemail').text(email);
+		
+        //alert( 'You clicked on '+data[1]+'\'s row' );
+    } );
+	
+	$('#users tbody').on( 'click', '.delBtn', function () {
+    table
+        .row( $(this).parents('tr') )
+        .remove()
+        .draw();
+} );
 
     // ------------------------------------------------------- //
     // Card Close

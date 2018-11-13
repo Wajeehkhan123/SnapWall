@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Users</title>
+    <title>Details</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
@@ -84,59 +84,87 @@
           </div>
           <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
           <ul class="list-unstyled">
-                    <li class="active"><a href="users.html"><span class="fas fa-user"></span>Users </a></li>
+                    <li><a href="users.html"><span class="fas fa-user"></span>Users </a></li>
                     <li><a href="orders.html"> <span class="fas fa-shopping-cart"></span>Orders </a></li>
                     <li><a href="about.html"><span class="fas fa-info-circle"></span>About Us </a></li>
                     <li><a href="logout.html"><span class="fas fa-sign-out-alt"></span>Logout </a></li>
           </ul>
         </nav>
-        <div class="content-inner" id="datatable">
+        <div class="content-inner">
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom">Users</h2>
+              <h2 class="no-margin-bottom">Details</h2>
             </div>
           </header>
-		  <section class="tables">
-        <div class="container-fluid">
-		    <table id="users" class="table table-bordered table-hover">
-          <thead>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Aaqib</td>
-              <td>0300 1234567</td>
-              <td>aaqib@gmail.com</td>
-              <td><button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></td>
-              <td><button type="button" class="btn btn-danger delBtn"><i class="fas fa-close"></i></button></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Shaheryar</td>
-              <td>0300 1234567</td>
-              <td>shaheryar@gmail.com</td>
-              <td><button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></td>
-              <td><button type="button" class="btn btn-danger delBtn"><i class="fas fa-close"></i></button></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Hassan</td>
-              <td>0300 1234567</td>
-              <td>hassan@gmail.com</td>
-              <td><button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></td>
-              <td><button type="button" class="btn btn-danger delBtn"><i class="fas fa-close"></i></button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div> 
-      </section>  
+
+          <section class="charts">
+            <div class="container-fluid">
+              <div class="row">
+                <!-- Line Charts-->
+                <div class="col-lg-6">
+                  <div class="line-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4" style="text-align: center;">User Details</h3>
+                    </div>
+                    <div class="card-body">
+                      <div style="margin: 5px;font-size: x-large;">
+                        <span><strong>Name: </strong></span> <span id="uname"></span>
+                      </div>
+                      <div style="margin: 5px;font-size: x-large;">
+                        <span><strong>Phone: </strong ></span> <span id="upno"></span>
+                      </div>
+                      <div style="margin: 5px;font-size: x-large;">
+                          <span><strong>Email: </strong></span> <span id="uemail"></span>
+                        </div>
+                        <div style="margin: 5px;font-size: x-large;">
+                            <span><strong>Referrals: </strong> User referral</span>
+                          </div>
+                          <div style="margin: 5px;font-size: x-large;">
+                              <span><strong>City: </strong> Lahore</span>
+                            </div>
+                            <div style="margin: 5px;font-size: x-large;">
+                                <span><strong>Area: </strong> Lahore Cantt</span>
+                              </div>
+                              <div style="margin: 5px;font-size: x-large;">
+                                  <span><strong>Address: </strong> Hurbanspura Lahore</span>
+                                </div>
+                                <div style="margin: 5px;font-size: x-large;">
+                                    <span><strong>Street: </strong> S#2</span>
+                                  </div>
+                                  <div style="margin: 5px;font-size: x-large;">
+                                      <span><strong>House: </strong> H#4</span>
+                                    </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="line-chart-example card">
+                      <div class="card-close">
+                        <div class="dropdown">
+                          <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                          <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                        </div>
+                      </div>
+                      <div class="card-header d-flex align-items-center">
+                        <h3 class="h4" style="text-align: center;">User Order Details</h3>
+                      </div>
+                      <div class="card-body">
+                        
+                      </div>
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
+          </section>
           
           <!-- Page Footer-->
           <footer class="main-footer">
@@ -153,99 +181,6 @@
             </div>
           </footer>
         </div>
-        
-        <div class="content-inner" id="details" style="display: none;">
-            <!-- Page Header-->
-            <header class="page-header">
-              <div class="container-fluid">
-                <h2 class="no-margin-bottom">Details</h2>
-              </div>
-            </header>
-    
-            <section class="charts">
-              <div class="container-fluid">
-                <div class="row">
-                  <!-- Line Charts-->
-                  <div class="col-lg-6">
-                    <div class="line-chart-example card">
-                      <div class="card-close">
-                        <div class="dropdown">
-                          <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
-                          <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
-                        </div>
-                      </div>
-                      <div class="card-header d-flex align-items-center">
-                        <h3 class="h4" style="text-align: center;">User Details</h3>
-                      </div>
-                      <div class="card-body">
-                        <div style="margin: 5px;font-size: x-large;">
-                          <span><strong>Name: </strong></span> <span id="uname"></span>
-                        </div>
-                        <div style="margin: 5px;font-size: x-large;">
-                          <span><strong>Phone: </strong ></span> <span id="upno"></span>
-                        </div>
-                        <div style="margin: 5px;font-size: x-large;">
-                            <span><strong>Email: </strong></span> <span id="uemail"></span>
-                          </div>
-                          <div style="margin: 5px;font-size: x-large;">
-                              <span><strong>Referrals: </strong> User referral</span>
-                            </div>
-                            <div style="margin: 5px;font-size: x-large;">
-                                <span><strong>City: </strong> Lahore</span>
-                              </div>
-                              <div style="margin: 5px;font-size: x-large;">
-                                  <span><strong>Area: </strong> Lahore Cantt</span>
-                                </div>
-                                <div style="margin: 5px;font-size: x-large;">
-                                    <span><strong>Address: </strong> Hurbanspura Lahore</span>
-                                  </div>
-                                  <div style="margin: 5px;font-size: x-large;">
-                                      <span><strong>Street: </strong> S#2</span>
-                                    </div>
-                                    <div style="margin: 5px;font-size: x-large;">
-                                        <span><strong>House: </strong> H#4</span>
-                                      </div>
-                      </div>
-                    </div>
-                  </div>
-    
-                  <div class="col-lg-6" style="margin-bottom: 1em;">
-                      <div class="line-chart-example card">
-                        <div class="card-close">
-                          <div class="dropdown">
-                            <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
-                            <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
-                          </div>
-                        </div>
-                        <div class="card-header d-flex align-items-center">
-                          <h3 class="h4" style="text-align: center;">User Order Details</h3>
-                        </div>
-                        <div class="card-body">
-                          
-                        </div>
-                      </div>
-                    </div>
-                  
-                  </div>
-                </div>
-            </section>
-            
-            <!-- Page Footer-->
-            <footer class="main-footer">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <p>SnapWall &copy; 2018</p>
-                  </div>
-                  <div class="col-sm-6 text-right">
-                    <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Shaheryar Tariq</a></p>
-                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-                  </div>
-                </div>
-              </div>
-            </footer>
-          </div>
-
       </div>
     </div>
     <!-- JavaScript files-->
