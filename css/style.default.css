@@ -3485,6 +3485,7 @@ a > code {
   }
 }
 
+
 .custom-select {
   height: calc(2.25rem + 2px);
   padding: 0.375rem 1.75rem 0.375rem 0.75rem;
@@ -3539,4 +3540,49 @@ a > code {
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   font-size: 125%;
+}
+
+.card-design {
+  background: lightgray;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.Detail-card {
+	  display: inline-block;
+    position: relative;
+    width: 100%;
+    margin: 25px 0;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    border-radius: 3px;
+    color: rgba(0, 0, 0, 0.87);
+    background: #fff;
+}
+
+.Detail-card-header {
+  margin: -20px 15px 0;
+  border-radius: 3px;
+  padding: 15px;
+  background-color: #2f333e;
+
+}
+
+.title {
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.inner-title {
+  color: #2f333e;
+  text-align: left;
+}
+
+.category {
+  margin-bottom: 0;
+  color: #785e4e;
+  text-align: right;
+}
+
+.Detail-card-content {
+  padding: 15px 20px;
 }
