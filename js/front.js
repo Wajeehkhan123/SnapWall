@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     'use strict';
 
-    var t;
+    var t="";
 
     // ------------------------------------------------------- //
     // Search Box
