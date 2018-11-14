@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
 
     'use strict';
@@ -41,10 +40,26 @@ $(document).ready(function () {
 	
         $('#users').on('click', 'tbody .viewBtn', function () {
 
-        var row_data = table.row($(this).closest('tr')).data();
-		/*var name = row_data[1];
-		var pno = row_data[2];
-		var email = row_data[3];*/
+            var name;
+            var pno;
+            var email;
+            var row_data;
+            var rowname=$(this).parents('tr').attr('class');
+            
+              			  if(rowname=="child"){
+				  
+                  row_data = table.row($(this).parents('tr').prev('tr')).data();
+                  name = row_data[1];
+                  pno = row_data[2];
+                  email = row_data[3];
+			  }
+         else{
+             row_data = table.row($(this).closest('tr')).data();
+
+        name = row_data[1];
+		pno = row_data[2];
+		email = row_data[3];
+         }
 		
         $('#datatable').hide();
         $('#changeTitle').text("Details");
@@ -81,10 +96,15 @@ $(document).ready(function () {
             reverseButtons: true
           }).then((result) => {
             if (result.value) {
-                console.log(table
-                    .row( $(t).parent('tr') ));
-              table
-              .row( $(t).parent('tr') )
+                
+				var rowname=$(t).parents('tr').attr('class');
+              			  if(rowname=="child"){
+				  
+				  table.row($(t).parents('tr').prev('tr')).remove();
+				  
+			  }
+			  table
+              .row( $(t).parents('tr') )
               .remove()
               .draw();
               swalWithBootstrapButtons(
@@ -98,7 +118,7 @@ $(document).ready(function () {
             ) {
               swalWithBootstrapButtons(
                 'Cancelled',
-                'Your imaginary file is safe :)',
+                'Your file is safe 🙂',
                 'error'
               )
             }
@@ -174,7 +194,7 @@ $(document).ready(function () {
             validClass: 'is-valid',
             ignore: ':hidden:not(.summernote, .checkbox-template, .form-control-custom),.note-editable.card-block',
             errorPlacement: function (error, element) {
-                // Add the `invalid-feedback` class to the error element
+                // Add the invalid-feedback class to the error element
                 error.addClass("invalid-feedback");
                 console.log(element);
                 if (element.prop("type") === "checkbox") {
