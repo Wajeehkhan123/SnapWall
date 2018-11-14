@@ -39,10 +39,9 @@ $(document).ready(function () {
         $('#users').on('click', 'tbody .viewBtn', function () {
 
         var row_data = table.row($(this).closest('tr')).data();
-        
-		var name = row_data[1];
+		/*var name = row_data[1];
 		var pno = row_data[2];
-		var email = row_data[3];
+		var email = row_data[3];*/
 		
         $('#datatable').hide();
         $('#changeTitle').text("Details");
@@ -79,8 +78,10 @@ $(document).ready(function () {
             reverseButtons: true
           }).then((result) => {
             if (result.value) {
+                console.log(table
+                    .row( $(t).parent('tr') ));
               table
-              .row( $(t).parents('tr') )
+              .row( $(t).parent('tr') )
               .remove()
               .draw();
               swalWithBootstrapButtons(
