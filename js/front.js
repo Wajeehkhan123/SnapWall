@@ -1,6 +1,9 @@
+
 $(document).ready(function () {
 
     'use strict';
+
+    var t;
 
     // ------------------------------------------------------- //
     // Search Box
@@ -61,7 +64,7 @@ $(document).ready(function () {
 	
 	$('#users tbody').on( 'click', '.delBtn', function (e) {
     
-        var t=$(this);
+         t=$(this);
 
         const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-success',
