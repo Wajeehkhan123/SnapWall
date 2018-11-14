@@ -61,30 +61,49 @@ $(document).ready(function () {
     });
 	
 	$('#users tbody').on( 'click', '.delBtn', function (e) {
-	var t=$(this);
-     bootbox.confirm({
-    message: "Do you want to delete this user?",
-    buttons: {
-        cancel: {
-            label: '<i class="fa fa-times"></i> Cancel'
-        },
-        confirm: {
-            label: '<i class="fa fa-check"></i> Confirm'
-        }
-    },
-    callback: function (result) {
-        if(result)
-		{
-			table
-           .row( $(t).parents('tr') )
-           .remove()
-           .draw();
-		}
-    }
-});	
-	 	return false;
-} );
+    
+        var t=$(this);
 
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            style: 'margin-left: 10px',
+            buttonsStyling: false,
+          });
+          
+          swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
+              table
+              .row( $(t).parents('tr') )
+              .remove()
+              .draw();
+              swalWithBootstrapButtons(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+            } else if (
+              // Read more about handling dismissals
+              result.dismiss === swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons(
+                'Cancelled',
+                'Your imaginary file is safe :)',
+                'error'
+              )
+            }
+          });
+
+        return false;
+});	
 
     // ------------------------------------------------------- //
     // Card Close
