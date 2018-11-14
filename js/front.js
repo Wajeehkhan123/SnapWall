@@ -30,47 +30,19 @@ $(document).ready(function () {
             className: 'control',
             orderable: false,
             targets:   0
-        }/*,
-		{
-            targets: [ 4 ],
-            visible: false,
-            searchable: false
-        },
-		{
-            targets: [ 5 ],
-            visible: false,
-            searchable: false
-        },
-		{
-            targets: [ 6 ],
-            visible: false,
-            searchable: false
-        },
-		{
-            targets: [ 7 ],
-            visible: false,
-            searchable: false
-        },
-		{
-            targets: [ 8 ],
-            visible: false,
-            searchable: false
-        },
-		{
-            targets: [ 9 ],
-            visible: false,
-            searchable: false
-        }*/
+        }
 		],
         order: [ 1, 'asc' ]
 		
     } );
 	
-	$('#users tbody').on('click', 'tr', function () {
-        var data = table.row( this ).data();
-		var name = data[1];
-		var pno = data[2];
-		var email = data[3];
+        $('#users').on('click', 'tbody .viewBtn', function () {
+
+        var row_data = table.row($(this).closest('tr')).data();
+        
+		var name = row_data[1];
+		var pno = row_data[2];
+		var email = row_data[3];
 		
 		$('#datatable').hide();
 		$('#details').show();
@@ -79,14 +51,36 @@ $(document).ready(function () {
 		$('#upno').text(pno);
 		$('#uemail').text(email);
 		
-        //alert( 'You clicked on '+data[1]+'\'s row' );
     } );
+
+    $('.backBtn').on('click',function() {
+        $('#details').hide();
+        $('#datatable').show();
+    });
 	
-	$('#users tbody').on( 'click', '.delBtn', function () {
-    table
-        .row( $(this).parents('tr') )
-        .remove()
-        .draw();
+	$('#users tbody').on( 'click', '.delBtn', function (e) {
+	var t=$(this);
+     bootbox.confirm({
+    message: "Do you want to delete this user?",
+    buttons: {
+        cancel: {
+            label: '<i class="fa fa-times"></i> Cancel'
+        },
+        confirm: {
+            label: '<i class="fa fa-check"></i> Confirm'
+        }
+    },
+    callback: function (result) {
+        if(result)
+		{
+			table
+           .row( $(t).parents('tr') )
+           .remove()
+           .draw();
+		}
+    }
+});	
+	 	return false;
 } );
 
 

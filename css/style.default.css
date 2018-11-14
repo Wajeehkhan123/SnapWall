@@ -3586,3 +3586,17 @@ a > code {
 .Detail-card-content {
   padding: 15px 20px;
 }
+
+.img-styling {
+  width: 100%;
+  height: 100%;
+}
+
+.background-color-brown {
+  background: #785e4e;
+  border-color: #785e4e;
+}
+
+.color-white {
+  color: whitesmoke;
+}
