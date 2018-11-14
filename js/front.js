@@ -66,9 +66,7 @@ $(document).ready(function () {
 
         const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            style: 'margin-left: 10px',
-            buttonsStyling: false,
+            cancelButtonClass: 'btn btn-danger '
           });
           
           swalWithBootstrapButtons({
