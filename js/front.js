@@ -44,7 +44,8 @@ $(document).ready(function () {
 		var pno = row_data[2];
 		var email = row_data[3];
 		
-		$('#datatable').hide();
+        $('#datatable').hide();
+        $('#changeTitle').text("Details");
 		$('#details').show();
 		
 		$('#uname').text(name);
@@ -55,6 +56,7 @@ $(document).ready(function () {
 
     $('.backBtn').on('click',function() {
         $('#details').hide();
+        $('#changeTitle').text("Users");
         $('#datatable').show();
     });
 	
