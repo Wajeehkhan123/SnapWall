@@ -20,7 +20,8 @@ $(document).ready(function () {
 	// ------------------------------------------------------ //
 	// Users DataTable
     // ------------------------------------------------------ //
-
+    var rootRef = firebase.database().ref().child("users");
+    
     var table = $('#users').DataTable( {
         responsive: {
            details: {
@@ -28,8 +29,6 @@ $(document).ready(function () {
            }
        }
    } );
-
-    var rootRef = firebase.database().ref().child("users");
 
     rootRef.on("child_added", snap => {
     var n = snap.child("name").val();
