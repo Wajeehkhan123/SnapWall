@@ -26,8 +26,18 @@ $(document).ready(function () {
            details: {
                type: 'column'
            }
+       },
+       columnDefs: 
+       [ 
+       {
+           className: 'control',
+           orderable: false,
+           targets:   0
        }
-   } );
+       ],
+       order: [ 1, 'asc' ]
+       
+} );
 
     var rootRef = firebase.database().ref().child("users");
 
@@ -35,30 +45,24 @@ $(document).ready(function () {
     var n = snap.child("name").val();
     var e = snap.child("email").val();
     var type = snap.child("typeAccount").val();
+    var id = snap.child("id").val();
 
     $("#users").DataTable().row.add([
-        n, e , type
+        id , n, e , type , '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button>',
+        '<button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button>',
+        '<button type="button" class="btn btn-danger delBtn"><i class="fas fa-close"></i></button>'
+
     ]).draw();
 
 });
 
-    
-
-    /*var table = $('#myTable').DataTable ( {
-        "bFilter": false
-        } );*/
-        
-        /*firebase.database().ref('users').on('child_added',function(snapshot) {
-        var dataSet = [snapshot.key, snapshot.val().Nombre];
-        table.rows.add([dataSet]).draw();
-        });*/
-
 	
-        /*$('#users').on('click', 'tbody .viewBtn', function () {
+        $('#users').on('click', 'tbody .viewBtn', function () {
 
             var name;
-            var pno;
             var email;
+            var utype;
+
             var row_data;
             var rowname=$(this).parents('tr').attr('class');
             
@@ -66,15 +70,15 @@ $(document).ready(function () {
 				  
                   row_data = table.row($(this).parents('tr').prev('tr')).data();
                   name = row_data[1];
-                  pno = row_data[2];
-                  email = row_data[3];
+                  email = row_data[2];
+                  utype = row_data[3];
 			  }
          else{
              row_data = table.row($(this).closest('tr')).data();
 
         name = row_data[1];
-		pno = row_data[2];
-		email = row_data[3];
+		email = row_data[2];
+		utype = row_data[3];
          }
 		
         $('#datatable').hide();
@@ -82,8 +86,8 @@ $(document).ready(function () {
 		$('#details').show();
 		
 		$('#uname').text(name);
-		$('#upno').text(pno);
 		$('#uemail').text(email);
+		$('#utype').text(utype);
 		
     } );
 
@@ -141,7 +145,7 @@ $(document).ready(function () {
           });
 
         return false;
-});	*/
+});	
 
     // ------------------------------------------------------- //
     // Card Close
