@@ -37,8 +37,7 @@ $(document).ready(function () {
        ],
        order: [ 1, 'asc' ]
        
-} ).columns.adjust()
-.responsive.recalc();
+} );
 
     var rootRef = firebase.database().ref().child("users");
 
