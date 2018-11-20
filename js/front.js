@@ -26,7 +26,30 @@ $(document).ready(function () {
            details: {
                type: 'column'
            }
-       }
+       },
+       columnDefs: [
+        {
+            targets: [ 3 ],
+            visible: false,
+            searchable: false
+        },
+        {
+            targets: [ 4 ],
+            visible: false
+        },
+        {
+            targets: [ 5 ],
+            visible: false
+        },
+        {
+            targets: [ 6 ],
+            visible: false
+        },
+        {
+            targets: [ 7 ],
+            visible: false
+        }
+    ]
        
 } );
 
@@ -97,7 +120,7 @@ var ref;
     }
 
     $("#users").DataTable().row.add([
-         n, e , phone , '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button>',
+         n, e , phone , type , address , city , state , zip , '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button>',
         '<button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button>',
         '<button type="button" class="btn btn-danger delBtn"><i class="fas fa-close"></i></button>'
 
@@ -124,28 +147,28 @@ var ref;
               			  if(rowname=="child"){
 				  
                   row_data = table.row($(this).parents('tr').prev('tr')).data();
-                  name = row_data[1];
-                  email = row_data[2];
-                  utype = type;
-                  p = phone;
-                  a = address;
-                  c = city;
-                  s = state;
-                  z = zip;
-                  //r = row_data[9];
+                  name = row_data[0];
+                  email = row_data[1];
+                  p = row_data[2];
+                  utype = row_data[3];
+                  a = row_data[4];
+                  c = row_data[5];
+                  s = row_data[6];
+                  z = row_data[7];
+                  //r = row_data[8];
 			  }
          else{
              row_data = table.row($(this).closest('tr')).data();
 
-             name = row_data[1];
-             email = row_data[2];
-             utype = type;
-             p = phone;
-             a = address;
-             c = city;
-             s = state;
-             z = zip;
-             //r = row_data[9]; 
+             name = row_data[0];
+             email = row_data[1];
+             p = row_data[2];
+             utype = row_data[3];
+             a = row_data[4];
+             c = row_data[5];
+             s = row_data[6];
+             z = row_data[7];
+             //r = row_data[8];
 			}
 		
         $('#datatable').hide();
