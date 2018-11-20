@@ -46,9 +46,56 @@ $(document).ready(function () {
     var e = snap.child("email").val();
     var type = snap.child("typeAccount").val();
     var id = snap.child("id").val();
+    var phone = snap.child("phone").val();
+    var address = snap.child("address").val();
+    var state = snap.child("state").val();
+    var zip = snap.child("zipCode").val();
+    var city = snap.child("city").val();
+    var ref = snap.child("referral").val();
+
+    if(n == null)
+    {
+        n = "NA";
+    }
+    if(ref == null)
+    {
+        ref = "NA";
+    }
+    if(e == null)
+    {
+        e = "NA";
+    }
+    if(type == null)
+    {
+        type = "NA";
+    }
+    if(id == null)
+    {
+        id = "NA";
+    }
+    if(phone == null)
+    {
+        phone = "NA";
+    }
+    if(address == null)
+    {
+        address = "NA";
+    }
+    if(zip == null)
+    {
+        zip = "NA";
+    }
+    if(city == null)
+    {
+        city = "NA";
+    }
+    if(state == null)
+    {
+        state = "NA";
+    }
 
     $("#users").DataTable().row.add([
-        id , n, e , type , '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button>',
+        id , n, e , type , phone , address , city , state , zip , '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button>',
         '<button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button>',
         '<button type="button" class="btn btn-danger delBtn"><i class="fas fa-close"></i></button>'
 
@@ -62,6 +109,12 @@ $(document).ready(function () {
             var name;
             var email;
             var utype;
+            var p;
+            var a;
+            var c;
+            var s;
+            var z;
+            var r;
 
             var row_data;
             var rowname=$(this).parents('tr').attr('class');
@@ -72,14 +125,26 @@ $(document).ready(function () {
                   name = row_data[1];
                   email = row_data[2];
                   utype = row_data[3];
+                  p = row_data[4];
+                  a = row_data[5];
+                  c = row_data[6];
+                  s = row_data[7];
+                  z = row_data[8];
+                  //r = row_data[9];
 			  }
          else{
              row_data = table.row($(this).closest('tr')).data();
 
-        name = row_data[1];
-		email = row_data[2];
-		utype = row_data[3];
-         }
+             name = row_data[1];
+             email = row_data[2];
+             utype = row_data[3];
+             p = row_data[4];
+             a = row_data[5];
+             c = row_data[6];
+             s = row_data[7];
+             z = row_data[8];
+             //r = row_data[9]; 
+			}
 		
         $('#datatable').hide();
         $('#changeTitle').text("Details");
@@ -87,7 +152,13 @@ $(document).ready(function () {
 		
 		$('#uname').text(name);
 		$('#uemail').text(email);
-		$('#utype').text(utype);
+        $('#utype').text(utype);
+        $('#phone').text(p);
+        $('#address').text(a);
+        $('#city').text(c);
+        $('#state').text(s);
+        $('#zip').text(z);
+       // $('#referral').text(r);
 		
     } );
 
