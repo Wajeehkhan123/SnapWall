@@ -26,32 +26,34 @@ $(document).ready(function () {
            details: {
                type: 'column'
            }
-       },
-       columnDefs: 
-       [ 
-       {
-           className: 'control',
-           orderable: false,
-           targets:   0
        }
-       ],
-       order: [ 1, 'asc' ]
        
 } );
+
+var n;
+var e;
+var type;
+var id;
+var phone;
+var address;
+var state;
+var zip;
+var city;
+var ref;
 
     var rootRef = firebase.database().ref().child("users");
 
     rootRef.on("child_added", snap => {
-    var n = snap.child("name").val();
-    var e = snap.child("email").val();
-    var type = snap.child("typeAccount").val();
-    var id = snap.child("id").val();
-    var phone = snap.child("phone").val();
-    var address = snap.child("address").val();
-    var state = snap.child("state").val();
-    var zip = snap.child("zipCode").val();
-    var city = snap.child("city").val();
-    var ref = snap.child("referral").val();
+     n = snap.child("name").val();
+     e = snap.child("email").val();
+     type = snap.child("typeAccount").val();
+     id = snap.child("id").val();
+     phone = snap.child("phone").val();
+     address = snap.child("address").val();
+     state = snap.child("state").val();
+     zip = snap.child("zipCode").val();
+     city = snap.child("city").val();
+     ref = snap.child("referral").val();
 
     if(n == null)
     {
@@ -95,7 +97,7 @@ $(document).ready(function () {
     }
 
     $("#users").DataTable().row.add([
-        id , n, e , type , phone , address , city , state , zip , '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button>',
+         n, e , phone , '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button>',
         '<button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button>',
         '<button type="button" class="btn btn-danger delBtn"><i class="fas fa-close"></i></button>'
 
@@ -124,12 +126,12 @@ $(document).ready(function () {
                   row_data = table.row($(this).parents('tr').prev('tr')).data();
                   name = row_data[1];
                   email = row_data[2];
-                  utype = row_data[3];
-                  p = row_data[4];
-                  a = row_data[5];
-                  c = row_data[6];
-                  s = row_data[7];
-                  z = row_data[8];
+                  utype = type;
+                  p = phone;
+                  a = address;
+                  c = city;
+                  s = state;
+                  z = zip;
                   //r = row_data[9];
 			  }
          else{
@@ -137,12 +139,12 @@ $(document).ready(function () {
 
              name = row_data[1];
              email = row_data[2];
-             utype = row_data[3];
-             p = row_data[4];
-             a = row_data[5];
-             c = row_data[6];
-             s = row_data[7];
-             z = row_data[8];
+             utype = type;
+             p = phone;
+             a = address;
+             c = city;
+             s = state;
+             z = zip;
              //r = row_data[9]; 
 			}
 		
