@@ -315,10 +315,10 @@ var ref;
             var qu = getData[k].question;
             var an = getData[k].answer;
             //console.log(qu,an);
-            var button = $("<button></button>").addClass("accordion").text(qu);
-            $('#dul').append(button);
-            var para = $("<p></p>").addClass("panel").text(an);
-            $('#dul').append(para);
+            var h4 = $("<h4></h4>").addClass("inner-title").text(qu);
+            $('.faqques').append(h4);
+            var para = $("<p></p>").addClass("category").text(an);
+            $('.faqques').append(para);
             
         }
     }
