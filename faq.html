@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title id="changeTitle">Users</title>
+    <title id="changeTitle">FAQ</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
@@ -77,44 +77,54 @@
           </div>
           <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
           <ul class="list-unstyled">
-                    <li class="active"><a href="users.html"><span class="fas fa-user"></span>Users </a></li>
+                    <li><a href="users.html"><span class="fas fa-user"></span>Users </a></li>
                     <li><a href="orders.html"> <span class="fas fa-shopping-cart"></span>Orders </a></li>
                     <li><a href="about.html"><span class="fas fa-info-circle"></span>About Us </a></li>
-                    <li><a href="faq.html"><span class="fas fa-question"></span>FAQ </a></li>
+                    <li class="active"><a href="faq.html"><span class="fas fa-question"></span>FAQ </a></li>
                     <li><a href="logout.html"><span class="fas fa-sign-out-alt"></span>Logout </a></li>
           </ul>
         </nav>
-        <div class="content-inner" id="datatable">
+        <div class="content-inner">
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom">Users</h2>
+              <h2 class="no-margin-bottom">FAQs</h2>
             </div>
           </header>
-		  <section class="tables">
-        <div class="container-fluid">
-		    <table id="users" class="table table-bordered table-hover display responsive no-wrap" width="100%">
-          <thead>
-            <!--<th>Id</th>-->
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Type</th>
-            <th>Address</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip Code</th>
-            <!--<th>Referral</th>-->
-            <th>Preview</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </thead>
-          <tbody id="ubody">
-            
-          </tbody>
-        </table>
-      </div> 
-      </section>  
+          
+        <div class="row" style="margin-top: 1em; margin-bottom: 1em;">
+          <div class="col-md-12">
+            <button type="button" style="margin-left: 1em;" class="btn btn-primary" id="addQtn"><i class="fas fa-plus" style="margin-right: 5px;"></i>Add an FAQ</button>
+          </div> 
+        </div>
+
+        <div class="col-lg-12" style="display: none;" id="faqCard">
+            <div class="Detail-card">
+                <div class="Detail-card-header">
+                    <h3 class="title">FAQs</h3>
+                </div>
+                <div class="Detail-card-content"> 
+                    <form>
+                        <div class="form-group">
+                          <label for="question">Add your question:</label>
+                          <input type="text" class="form-control" id="question" aria-describedby="questionFaq" placeholder="enter question">
+                        </div>
+                        <div class="form-group">
+                          <label for="answer">Answer the question:</label>
+                          <input type="text" class="form-control" id="answer" placeholder="enter answer">
+                        </div>
+                        <div class="row" style="flex-wrap: unset;">
+                        <div class="col-md-6 text-right">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i></button>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <button type="submit" class="btn btn-danger" id="faqClose"><i class="fas fa-close"></i></button>
+                        </div>
+                        </div>
+                      </form>
+                </div>
+            </div>
+          </div>
           
           <!-- Page Footer-->
           <footer class="main-footer">
@@ -131,79 +141,6 @@
             </div>
           </footer>
         </div>
-        
-        <div class="content-inner" id="details" style="display: none;">
-            <!-- Page Header-->
-            <header class="page-header">
-              <div class="container-fluid">
-                <h2 class="no-margin-bottom">Details</h2>
-              </div>
-            </header>
-    
-            <section class="charts">
-              <div class="container-fluid">
-                <div class="row">
-                  
-                  <div class="col-lg-6">
-                    <div class="Detail-card">
-                        <div class="Detail-card-header">
-                            <h3 class="title">User Details</h3>
-                        </div>
-                        <div class="Detail-card-content"> 
-                            <h4 class="inner-title">Name</h4>
-                            <p id="uname" class="category"></p>
-                            <h4 class="inner-title">Email</h4>
-                            <p id="uemail" class="category"></p>
-                            <h4 class="inner-title">Type</h4>
-                            <p id="utype" class="category"></p>
-                            <h4 class="inner-title">Phone</h4>
-                            <p id="phone" class="category"></p>
-                            <h4 class="inner-title">Address</h4>
-                            <p id="address" class="category"></p>
-                            <h4 class="inner-title">City</h4>
-                            <p id="city" class="category"></p>
-                            <h4 class="inner-title">State</h4>
-                            <p id="state" class="category"></p>
-                            <h4 class="inner-title">Zip Code</h4>
-                            <p id="zip" class="category"></p>
-                            <!--<h4 class="inner-title">Referrals</h4>
-                            <p id="referral" class="category">User Referrals</p>-->
-                        </div>
-                    </div>
-                  </div>
-    
-                  <div class="col-lg-6">
-                      <div class="Detail-card">
-                          <div class="Detail-card-header">
-                              <h3 class="title">User Order Details</h3>
-                          </div>
-                          <div class="Detail-card-content">
-                             
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-lg-12">
-                      <button type="button" style="margin-bottom: 3em;" class="btn btn-primary backBtn"><i class="fas fa-arrow-left"></i></button>
-                    </div>
-                  </div>
-                </div>
-            </section>
-            
-            <!-- Page Footer-->
-            <footer class="main-footer">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <p>SnapWall &copy; 2018</p>
-                  </div>
-                  <div class="col-sm-6 text-right">
-                    <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Shaheryar Tariq</a></p>
-                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-                  </div>
-                </div>
-              </div>
-            </footer>
-          </div>
 
       </div>
     </div>

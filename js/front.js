@@ -243,6 +243,25 @@ var ref;
         return false;
 });	
 
+    // ------------------------------------------------------ //
+    // Add Question
+    // ------------------------------------------------------ //
+
+    // Hiding faq control
+    $('#faqCard').hide();
+
+    // Getting faq reference
+    var faqRef = firebase.database().ref().child("faq");
+
+    $('#addQtn').on('click', function() {
+        $('#faqCard').slideDown(1000);
+    });
+
+    // Faq close
+    $('#faqClose').on('click', function() {
+        $('#faqCard').slideUp(1000);
+    });
+
     // ------------------------------------------------------- //
     // Card Close
     // ------------------------------------------------------ //
