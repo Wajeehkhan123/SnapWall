@@ -247,11 +247,39 @@ var ref;
     // Add Question
     // ------------------------------------------------------ //
 
+    /* Toggle between adding and removing the "active" and "show" classes when the user clicks on one of the "Section" buttons. The "active" class is used to add a background color to the current button when its belonging panel is open. The "show" class is used to open the specific accordion panel */
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function(){
+        this.classList.toggle("active");
+        this.nextElementSibling.classList.toggle("show");
+      }
+    }
+
     // Hiding faq control
+    var faqRef = firebase.database().ref().child("faq");
     $('#faqCard').hide();
+
+
+    /*var myfaqRef = new Firebase('https://snapwall-d66e6.firebaseio.com/');
+    $('#faqSubmit').on('click', function() {
+        var ques = $('#question').val();
+        var ans = $('#answer').val();
+        myfaqRef.push({ question: ques, answer: ans });
+    });
+    myfaqRef.on('child_added', function(snapshot) {
+        var message = snapshot.val();
+        displayChatMessage(message.ques, message.ans);
+      });
 
     // Getting faq reference
     var faqRef = firebase.database().ref().child("faq");
+    faqRef.on("child_added", snap => {
+        
+
+    });*/
 
     $('#addQtn').on('click', function() {
         $('#faqCard').slideDown(1000);
@@ -261,6 +289,68 @@ var ref;
     $('#faqClose').on('click', function() {
         $('#faqCard').slideUp(1000);
     });
+
+    var ques; 
+    var ans;
+
+    faqRef.on('value', gotData, errData); 
+
+    function gotData(data){
+        //console.log(data.val());
+        var getData = data.val();
+        var keys = Object.keys(getData);
+        console.log(keys);
+
+       /* $('#question1').text(getData[keys[0]].question);
+        $('#answer1').text(getData[keys[0]].answer);
+
+        $('#question2').text(getData[keys[1]].question);
+        $('#answer2').text(getData[keys[1]].answer);
+
+        $('#question3').text(getData[keys[2]].question);
+        $('#answer3').text(getData[keys[2]].answer);*/
+
+        for(var i = 0; i < keys.length; i++){
+            var k = keys[i];
+            var qu = getData[k].question;
+            var an = getData[k].answer;
+            //console.log(qu,an);
+            var button = $("<button></button>").addClass("accordion").text(qu);
+            $('#dul').append(button);
+            var para = $("<p></p>").addClass("panel").text(an);
+            $('#dul').append(para);
+            
+        }
+    }
+
+    function errData(err){
+        console.log('Error !');
+        console.log(err);
+    }
+    
+    
+   /* snap => {
+        ques = snap.child("question").val();
+        ans = snap.child("answer").val();
+
+        $('#question1').text(ques);
+        $('#answer1').text(ans);
+
+        $('#question2').text(ques);
+        $('#answer2').text(ans);
+
+        $('#question3').text(ques);
+        $('#answer3').text(ans);
+    });*/
+
+    $('#faqSubmit').on('click', function() {
+        var question = $('#question').val();
+        var answer = $('#answer').val();
+        faqRef.push({
+            question: question,
+            answer: answer
+        });
+    })
 
     // ------------------------------------------------------- //
     // Card Close
