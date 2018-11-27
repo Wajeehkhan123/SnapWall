@@ -3,6 +3,7 @@ $(document).ready(function () {
     'use strict';
 
     var t="";
+    var o="";
 
     // ------------------------------------------------------- //
     // Search Box
@@ -14,7 +15,10 @@ $(document).ready(function () {
     $('.dismiss').on('click', function () {
         $('.search-box').fadeOut();
     });
-	
+    
+    
+    // User page
+
 	$('#details').hide();
 	
 	// ------------------------------------------------------ //
@@ -243,6 +247,241 @@ var ref;
         return false;
 });	
 
+// ----------------------------------------------------------- //
+
+// Order page
+
+$('#orderdetails').hide();
+	
+	// ------------------------------------------------------ //
+	// Orders DataTable
+    // ------------------------------------------------------ //
+
+var orderTable = $('#orders').DataTable( {
+    responsive: {
+       details: {
+           type: 'column'
+       }
+    },
+   columnDefs: [
+    {
+        targets: [ 3 ],
+        visible: false,
+        searchable: false
+    },
+    {
+        targets: [ 4 ],
+        visible: false
+    },
+    {
+        targets: [ 5 ],
+        visible: false
+    },
+    {
+        targets: [ 6 ],
+        visible: false
+    },
+    {
+        targets: [ 7 ],
+        visible: false
+    },
+    {
+        targets: [ 8 ],
+        visible: false
+    }
+]     
+} );
+
+
+var placedate;
+var expectedArrival;
+var status;
+var user_id;
+var price;
+var orderAddress;
+var orderState;
+var orderZip;
+var orderCity;
+
+    var orderRef = firebase.database().ref().child("orders");
+
+    orderRef.on("child_added", snap => {
+     placedate = snap.child("placement_date").val();
+     expectedArrival = snap.child("expected_arrival").val();
+     status = snap.child("status").val();
+     user_id = snap.child("user_id").val();
+     price = snap.child("price").val();
+     orderAddress = snap.child("shipping_address").val();
+     orderState = snap.child("shipping_province").val();
+     orderZip = snap.child("shipping_zipcode").val();
+     orderCity = snap.child("shipping_city").val();
+
+    if(placedate == null)
+    {
+        placedate = "NA";
+    }
+    if(expectedArrival == null)
+    {
+        expectedArrival = "NA";
+    }
+    if(status == null)
+    {
+        status = "NA";
+    }
+    if(price == null)
+    {
+        price = "NA";
+    }
+    if(user_id == null)
+    {
+        user_id = "NA";
+    }
+    if(orderAddress == null)
+    {
+        orderAddress = "NA";
+    }
+    if(orderZip == null)
+    {
+        orderZip = "NA";
+    }
+    if(orderCity == null)
+    {
+        orderCity = "NA";
+    }
+    if(orderState == null)
+    {
+        orderState = "NA";
+    }
+
+    $("#orders").DataTable().row.add([
+         status , price , placedate, expectedArrival , orderAddress , orderCity , orderState , orderZip , user_id , '<button type="button" class="btn btn-primary orderviewBtn"><i class="fas fa-eye"></i></button>',
+        '<button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button>',
+        '<button type="button" class="btn btn-danger orderdelBtn"><i class="fas fa-close"></i></button>'
+
+    ]).draw();
+
+});
+
+$('#orders').on('click', 'tbody .orderviewBtn', function () {
+
+    var pd;
+    var ea;
+    var sta;
+    var pri;
+    var shipadd;
+    var shipcity;
+    var shipstate;
+    var shipzip;
+    var usrid;
+
+    var order_row_data;
+
+    var userrowname=$(this).parents('tr').attr('class');
+    
+                    if(userrowname=="child"){
+          
+          order_row_data = orderTable.row($(this).parents('tr').prev('tr')).data();
+          sta = order_row_data[0];
+          pri = order_row_data[1];
+          pd = order_row_data[2];
+          ea = order_row_data[3];
+          shipadd = order_row_data[4];
+          shipcity = order_row_data[5];
+          shipstate = order_row_data[6];
+          shipzip = order_row_data[7];
+          usrid = order_row_data[8];
+      }
+ else{
+     order_row_data = orderTable.row($(this).closest('tr')).data();
+
+          sta = order_row_data[0];
+          pri = order_row_data[1];
+          pd = order_row_data[2];
+          ea = order_row_data[3];
+          shipadd = order_row_data[4];
+          shipcity = order_row_data[5];
+          shipstate = order_row_data[6];
+          shipzip = order_row_data[7];
+          usrid = order_row_data[8];
+    }
+
+$('#datatableOrder').hide();
+$('#changeTitle').text("Details");
+$('#orderdetails').show();
+
+$('#pd').text(pd);
+$('#ea').text(ea);
+$('#price').text(pri);
+$('#status').text(sta);
+$('#sp').text(shipstate);
+$('#sc').text(shipcity);
+$('#szc').text(shipzip);
+$('#ui').text(usrid);
+$('#sa').text(shipadd);
+
+} );
+
+$('.orderbackBtn').on('click',function() {
+    $('#orderdetails').hide();
+    $('#changeTitle').text("Orders");
+    $('#datatableOrder').show();
+});
+
+$('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
+    
+    o=$(this);
+
+   const swalWithBootstrapButtons = swal.mixin({
+       confirmButtonClass: 'btn btn-success',
+       cancelButtonClass: 'btn btn-danger '
+     });
+     
+     swalWithBootstrapButtons({
+       title: 'Are you sure?',
+       text: "You won't be able to revert this!",
+       type: 'warning',
+       showCancelButton: true,
+       confirmButtonText: 'Yes, delete it!',
+       cancelButtonText: 'No, cancel!',
+       reverseButtons: true
+     }).then((result) => {
+       if (result.value) {
+           
+           var orderrowname=$(o).parents('tr').attr('class');
+                       if(orderrowname=="child"){
+             
+             orderTable.row($(o).parents('tr').prev('tr')).remove();
+             
+         }
+         orderTable
+         .row( $(o).parents('tr') )
+         .remove()
+         .draw();
+         swalWithBootstrapButtons(
+           'Deleted!',
+           'Your file has been deleted.',
+           'success'
+         )
+       } else if (
+         // Read more about handling dismissals
+         result.dismiss === swal.DismissReason.cancel
+       ) {
+         swalWithBootstrapButtons(
+           'Cancelled',
+           'Your file is safe 🙂',
+           'error'
+         )
+       }
+     });
+
+   return false;
+});	
+
+// ------------------------------------------------------------ //
+
+
+
+
     // ------------------------------------------------------ //
     // Add Question
     // ------------------------------------------------------ //
@@ -369,6 +608,7 @@ var ref;
                    var div=$(btn).closest(".waj");
                    var keyHaiYeBhai=div.attr("id");
                    console.log();
+                   div.remove();
                    firebase.database().ref("faq").child(keyHaiYeBhai).remove()
                    .then(function() {
                      console.log("Remove succeeded.");
@@ -376,8 +616,7 @@ var ref;
                    .catch(function(error) {
                      console.log("Remove failed: " + error.message);
                    });
-                   div.parent("div").html("");
-                   div.remove();
+                   //div.parent("div").html("");
                    console.log();
                   swalWithBootstrapButtons(
                     'Deleted!',
@@ -432,7 +671,25 @@ var ref;
             question: question,
             answer: answer
         });
-    })
+    });
+
+    $('#addImg').on('click', function() {
+        const ref = firebase.storage().ref();
+const file = document.querySelector('#image').files[0]
+const namefile = (+new Date()) + '-' + file.name;
+const metadata = {
+  contentType: file.type
+};
+const task = ref.child(namefile).put(file, metadata);
+task
+  .then(snapshot => snapshot.ref.getDownloadURL())
+  .then((url) => {
+    console.log(url);
+    document.querySelector('#someImageTagID').src = url;
+  })
+  .catch(console.error);
+    });
+
 
     // ------------------------------------------------------- //
     // Card Close

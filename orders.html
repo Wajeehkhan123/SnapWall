@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Orders</title>
+    <title id="changeTitle">Orders</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
@@ -24,6 +24,10 @@
     <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--Sweet Alert 2-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.0/sweetalert2.min.css" integrity="sha256-iRCfyJKT4SVGA+So9OdVCCcIW0zuKBLXdg+diMQB5SY=" crossorigin="anonymous" />
     <!-- Tweaks for older IEs--><!--[if lt IE 9]
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -81,13 +85,37 @@
                     <li><a href="logout.html"><span class="fas fa-sign-out-alt"></span>Logout </a></li>
           </ul>
         </nav>
-        <div class="content-inner">
+        <div class="content-inner" id="datatableOrder">
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
               <h2 class="no-margin-bottom">Orders</h2>
             </div>
           </header>
+		  <section class="tables">
+        <div class="container-fluid">
+		    <table id="orders" class="table table-bordered table-hover display responsive no-wrap" width="100%">
+          <thead>
+            <!--<th>Id</th>-->
+            <th>Status</th>
+            <th>Price</th>
+            <th>Placement Date</th>
+            <th>Expected Arrival</th>
+            <th>Order Address</th>
+            <th>Order City</th>
+            <th>Order State</th>
+            <th>Order Zip</th>
+            <th>User Id</th>
+            <th>Preview</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div> 
+      </section>  
           
           <!-- Page Footer-->
           <footer class="main-footer">
@@ -104,6 +132,82 @@
             </div>
           </footer>
         </div>
+        
+        <div class="content-inner" id="orderdetails" style="display: none;">
+            <!-- Page Header-->
+            <header class="page-header">
+              <div class="container-fluid">
+                <h2 class="no-margin-bottom">Details</h2>
+              </div>
+            </header>
+    
+            <section class="charts">
+              <div class="container-fluid">
+                <div class="row">
+                  
+                  <div class="col-lg-12">
+                    <div class="Detail-card">
+                        <div class="Detail-card-header">
+                            <h3 class="title">Order Details</h3>
+                        </div>
+                        <div class="Detail-card-content"> 
+                            <h4 class="inner-title">Placment Date</h4>
+                            <p id="pd" class="category"></p>
+                            <h4 class="inner-title">Expected Arrival</h4>
+                            <p id="ea" class="category"></p>
+                            <h4 class="inner-title">Price</h4>
+                            <p id="price" class="category"></p>
+                            <h4 class="inner-title">Status</h4>
+                            <p id="status" class="category"></p>
+                            <h4 class="inner-title">Shipping Province</h4>
+                            <p id="sp" class="category"></p>
+                            <h4 class="inner-title">Shipping City</h4>
+                            <p id="sc" class="category"></p>
+                            <h4 class="inner-title">Shipping Address</h4>
+                            <p id="sa" class="category"></p>
+                            <h4 class="inner-title">Zip Code</h4>
+                            <p id="szc" class="category"></p>
+                            <h4 class="inner-title">User Id</h4>
+                            <p id="ui" class="category"></p>
+                            <!--<h4 class="inner-title">Referrals</h4>
+                            <p id="referral" class="category">User Referrals</p>-->
+                        </div>
+                    </div>
+                  </div>
+    
+                 <!-- <div class="col-lg-6">
+                      <div class="Detail-card">
+                          <div class="Detail-card-header">
+                              <h3 class="title">User Order Details</h3>
+                          </div>
+                          <div class="Detail-card-content">
+                             
+                          </div>
+                      </div>
+                  </div>-->
+                  <div class="col-lg-12">
+                      <button type="button" style="margin-bottom: 3em;" class="btn btn-primary orderbackBtn"><i class="fas fa-arrow-left"></i></button>
+                    </div>
+                  </div>
+                </div>
+            </section>
+            
+            <!-- Page Footer-->
+            <footer class="main-footer">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>SnapWall &copy; 2018</p>
+                  </div>
+                  <div class="col-sm-6 text-right">
+                    <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Shaheryar Tariq</a></p>
+                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                  </div>
+                </div>
+              </div>
+            </footer>
+          </div>
+
       </div>
     </div>
     <!-- JavaScript files-->
@@ -118,8 +222,23 @@
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <!--DataTable CDN-->
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.2/b-1.5.4/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
-    <!--BootBox-->
-    <script type="text/javascript" src="js/bootbox.min.js"></script>
+    <!--Sweet Alert 2-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.0/sweetalert2.all.js" integrity="sha256-q0VbkGlQnd6FCDsjIOw97vt7NTVducJjCuXp5LbJ3Cc=" crossorigin="anonymous"></script>
+    <!--Firebase-->   
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script>
+  // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAdysHjnDG19PitbScXbxPwrWn3e8gti90",
+      authDomain: "snapwall-d66e6.firebaseapp.com",
+      databaseURL: "https://snapwall-d66e6.firebaseio.com",
+      projectId: "snapwall-d66e6",
+      storageBucket: "snapwall-d66e6.appspot.com",
+      messagingSenderId: "769108814826"
+    };
+    firebase.initializeApp(config);
+    </script>
+
     <!-- Main File-->
     <script src="js/front.js"></script>
   </body>
