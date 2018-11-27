@@ -348,15 +348,56 @@ var ref;
         }
         $(".btn-delete").on("click",function(){
             var btn = $(this);
-           // $(btn).parent("div").parent("div").parent("div");
-           var div=$(btn).closest(".waj");
-           var keyHaiYeBhai=div.attr("id");
-           console.log();
-           firebase.database().ref("faq").child(keyHaiYeBhai).remove();
-           div.parent("div").html("");
-          
-           //div.remove();
-            console.log();
+
+            const swalWithBootstrapButtons = swal.mixin({
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                
+              });
+              
+              swalWithBootstrapButtons({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.value) {
+                   // $(btn).parent("div").parent("div").parent("div");
+                   var div=$(btn).closest(".waj");
+                   var keyHaiYeBhai=div.attr("id");
+                   console.log();
+                   firebase.database().ref("faq").child(keyHaiYeBhai).remove()
+                   .then(function() {
+                     console.log("Remove succeeded.");
+                   })
+                   .catch(function(error) {
+                     console.log("Remove failed: " + error.message);
+                   });
+                   div.parent("div").html("");
+                   div.remove();
+                   console.log();
+                  swalWithBootstrapButtons(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+                } else if (
+                  // Read more about handling dismissals
+                  result.dismiss === swal.DismissReason.cancel
+                ) {
+                  swalWithBootstrapButtons(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                  )
+                }
+              });
+
+              return false;
+
         });
         
     }
