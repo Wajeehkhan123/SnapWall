@@ -317,7 +317,7 @@ var ref;
             console.log(k);
             var divElement="<div id=\""+k+"\" class=\"waj text-center\"><div class=\"row\"><div class=\"col-md-12\">"+    
             "<h4 class=\"inner-title\">"+qu+"</h4></div><div class=\"col-md-6 text-left\"><p id=\"uname\" class=\"category text-left\">"+an+"</p></div>"+
-             "<div class=\"col-md-6 text-right\"><button type=\"button\" style=\"margin-bottom: 0.5em;\" class=\"btn btn-danger\"><i class=\"fas fa-close\"></i></button></div>"+
+             "<div class=\"col-md-6 text-right\"><button type=\"button\" style=\"margin-bottom: 0.5em;\" class=\"btn btn-danger btn-delete\"><i class=\"fas fa-close\"></i></button></div>"+
              "</div><hr></div>";
                 
                 
@@ -346,6 +346,19 @@ var ref;
             var button = $("<button type='button' style='margin-bottom: 0.5em;' class='btn btn-danger'><i class='fas fa-close'></i></button>").addClass("col-md-offset-6");
             $('.faqques').append(button);*/
         }
+        $(".btn-delete").on("click",function(){
+            var btn = $(this);
+           // $(btn).parent("div").parent("div").parent("div");
+           var div=$(btn).closest(".waj");
+           var keyHaiYeBhai=div.attr("id");
+           console.log();
+           firebase.database().ref("faq").child(keyHaiYeBhai).remove();
+           div.parent("div").html("");
+          
+           //div.remove();
+            console.log();
+        });
+        
     }
 
     function errData(err){
@@ -367,6 +380,9 @@ var ref;
         $('#question3').text(ques);
         $('#answer3').text(ans);
     });*/
+
+//delete handler
+
 
     $('#faqSubmit').on('click', function() {
         var question = $('#question').val();
