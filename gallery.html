@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>About Us</title>
+    <title id="changeTitle">Gallery</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
@@ -24,6 +24,10 @@
     <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--Sweet Alert 2-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.0/sweetalert2.min.css" integrity="sha256-iRCfyJKT4SVGA+So9OdVCCcIW0zuKBLXdg+diMQB5SY=" crossorigin="anonymous" />
     <!-- Tweaks for older IEs--><!--[if lt IE 9]
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -75,8 +79,8 @@
           <ul class="list-unstyled">
                     <li><a href="users.html"><span class="fas fa-user"></span>Users </a></li>
                     <li><a href="orders.html"> <span class="fas fa-shopping-cart"></span>Orders </a></li>
-                    <li><a href="gallery.html"> <span class="fas fa-file-image-o"></span>Gallery </a></li>
-                    <li class="active"><a href="about.html"><span class="fas fa-info-circle"></span>About Us </a></li>
+                    <li class="active"><a href="gallery.html"> <span class="fas fa-file-image-o"></span>Gallery </a></li>
+                    <li><a href="about.html"><span class="fas fa-info-circle"></span>About Us </a></li>
                     <li><a href="faq.html"><span class="fas fa-question"></span>FAQ </a></li>
                     <li><a href="logout.html"><span class="fas fa-sign-out-alt"></span>Logout </a></li>
           </ul>
@@ -85,9 +89,9 @@
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom">About Us</h2>
+              <h2 class="no-margin-bottom">Gallery</h2>
             </div>
-          </header>  
+          </header>
           
           <!-- Page Footer-->
           <footer class="main-footer">
@@ -104,6 +108,7 @@
             </div>
           </footer>
         </div>
+
       </div>
     </div>
     <!-- JavaScript files-->
@@ -118,9 +123,25 @@
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <!--DataTable CDN-->
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.2/b-1.5.4/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
-    <!--BootBox-->
-    <script type="text/javascript" src="js/bootbox.min.js"></script>
+    <!--Sweet Alert 2-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.0/sweetalert2.all.js" integrity="sha256-q0VbkGlQnd6FCDsjIOw97vt7NTVducJjCuXp5LbJ3Cc=" crossorigin="anonymous"></script>
+    <!--Firebase-->   
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script>
+  // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAdysHjnDG19PitbScXbxPwrWn3e8gti90",
+      authDomain: "snapwall-d66e6.firebaseapp.com",
+      databaseURL: "https://snapwall-d66e6.firebaseio.com",
+      projectId: "snapwall-d66e6",
+      storageBucket: "snapwall-d66e6.appspot.com",
+      messagingSenderId: "769108814826"
+    };
+    firebase.initializeApp(config);
+    </script>
+
     <!-- Main File-->
     <script src="js/front.js"></script>
+    <script src="js/p5.min.js"></script>
   </body>
 </html>
