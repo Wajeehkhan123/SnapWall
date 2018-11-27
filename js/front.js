@@ -309,17 +309,42 @@ var ref;
 
         $('#question3').text(getData[keys[2]].question);
         $('#answer3').text(getData[keys[2]].answer);*/
-
+ var mainDiv=$("#questionlist");
         for(var i = 0; i < keys.length; i++){
             var k = keys[i];
             var qu = getData[k].question;
             var an = getData[k].answer;
-            //console.log(qu,an);
+            console.log(k);
+            var divElement="<div id=\""+k+"\" class=\"waj text-center\"><div class=\"row\"><div class=\"col-md-12\">"+    
+            "<h4 class=\"inner-title\">"+qu+"</h4></div><div class=\"col-md-6 text-left\"><p id=\"uname\" class=\"category text-left\">"+an+"</p></div>"+
+             "<div class=\"col-md-6 text-right\"><button type=\"button\" style=\"margin-bottom: 0.5em;\" class=\"btn btn-danger\"><i class=\"fas fa-close\"></i></button></div>"+
+             "</div><hr></div>";
+                
+                
+            $(mainDiv).append(divElement);
+            
+        
+          
+            /*
+             
+            
+            
             var h4 = $("<h4></h4>").addClass("inner-title").text(qu);
+            $('.h').append(h4);
+            var para = $("<p></p>").addClass("category").text(an);
+            $('.p').append(para);
+            var button = $("<button type='button' style='margin-bottom: 0.5em;' class='btn btn-danger'><i class='fas fa-close'></i></button>").addClass("col-md-offset-6");
+            $('.b').append(button);
+            var line = $("<hr>");
+            $('.waj').append(line);
+            
+            
+            /*var h4 = $("<h4></h4>").addClass("inner-title").text(qu);
             $('.faqques').append(h4);
             var para = $("<p></p>").addClass("category").text(an);
             $('.faqques').append(para);
-            
+            var button = $("<button type='button' style='margin-bottom: 0.5em;' class='btn btn-danger'><i class='fas fa-close'></i></button>").addClass("col-md-offset-6");
+            $('.faqques').append(button);*/
         }
     }
 
