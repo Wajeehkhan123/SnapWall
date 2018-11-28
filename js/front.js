@@ -661,6 +661,7 @@ $('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
                    firebase.database().ref("faq").child(keyHaiYeBhai).remove()
                    .then(function() {
                      console.log("Remove succeeded.");
+                     location.reload();
                    })
                    .catch(function(error) {
                      console.log("Remove failed: " + error.message);
