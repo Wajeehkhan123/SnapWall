@@ -450,7 +450,14 @@ function gotOrderData(data){
         if(k == oid){    
         for(var j=0; j<pic.length; j++)
         {
-            var appenddivElement="<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img1\">"+"<img src=\""+pic[j]+"\"></div><hr></div>";
+            var src = "data:image/jpeg;base64,";
+            var item_image = pic[j];
+            src += item_image;
+            var newImage = document.createElement('img');
+            newImage.src = src;
+            newImage.width = newImage.height = "80";
+            //document.querySelector('.img').innerHTML = newImage.outerHTML;//where to insert your image
+            var appenddivElement="<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img\">"+"<img src=\""+newImage.src+"\"></div><hr></div>";
                 
             $(mainImageDiv).append(appenddivElement);
             console.log("Order ID = "+k);
