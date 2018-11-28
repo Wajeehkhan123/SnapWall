@@ -288,6 +288,10 @@ var orderTable = $('#orders').DataTable( {
     {
         targets: [ 8 ],
         visible: false
+    },
+    {
+        targets: [ 9 ],
+        visible: false
     }
 ]     
 } );
@@ -302,10 +306,11 @@ var orderAddress;
 var orderState;
 var orderZip;
 var orderCity;
+var orderid;
 
-    var orderRef = firebase.database().ref().child("orders");
+     var orderRef = firebase.database().ref().child("orders");
 
-    orderRef.on("child_added", snap => {
+     orderRef.on("child_added", snap => {
      placedate = snap.child("placement_date").val();
      expectedArrival = snap.child("expected_arrival").val();
      status = snap.child("status").val();
@@ -315,6 +320,7 @@ var orderCity;
      orderState = snap.child("shipping_province").val();
      orderZip = snap.child("shipping_zipcode").val();
      orderCity = snap.child("shipping_city").val();
+     orderid = snap.child("key").val();
 
     if(placedate == null)
     {
@@ -354,7 +360,7 @@ var orderCity;
     }
 
     $("#orders").DataTable().row.add([
-         status , price , placedate, expectedArrival , orderAddress , orderCity , orderState , orderZip , user_id , '<button type="button" class="btn btn-primary orderviewBtn"><i class="fas fa-eye"></i></button>',
+         orderid , status , price , placedate, expectedArrival , orderAddress , orderCity , orderState , orderZip , user_id , '<button type="button" class="btn btn-primary orderviewBtn"><i class="fas fa-eye"></i></button>',
         '<button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button>',
         '<button type="button" class="btn btn-danger orderdelBtn"><i class="fas fa-close"></i></button>'
 
@@ -373,6 +379,7 @@ $('#orders').on('click', 'tbody .orderviewBtn', function () {
     var shipstate;
     var shipzip;
     var usrid;
+    var oid;
 
     var order_row_data;
 
@@ -381,28 +388,31 @@ $('#orders').on('click', 'tbody .orderviewBtn', function () {
                     if(userrowname=="child"){
           
           order_row_data = orderTable.row($(this).parents('tr').prev('tr')).data();
-          sta = order_row_data[0];
-          pri = order_row_data[1];
-          pd = order_row_data[2];
-          ea = order_row_data[3];
-          shipadd = order_row_data[4];
-          shipcity = order_row_data[5];
-          shipstate = order_row_data[6];
-          shipzip = order_row_data[7];
-          usrid = order_row_data[8];
+          oid = order_row_data[0];
+          sta = order_row_data[1];
+          pri = order_row_data[2];
+          pd = order_row_data[3];
+          ea = order_row_data[4];
+          shipadd = order_row_data[5];
+          shipcity = order_row_data[6];
+          shipstate = order_row_data[7];
+          shipzip = order_row_data[8];
+          usrid = order_row_data[9];
       }
  else{
      order_row_data = orderTable.row($(this).closest('tr')).data();
 
-          sta = order_row_data[0];
-          pri = order_row_data[1];
-          pd = order_row_data[2];
-          ea = order_row_data[3];
-          shipadd = order_row_data[4];
-          shipcity = order_row_data[5];
-          shipstate = order_row_data[6];
-          shipzip = order_row_data[7];
-          usrid = order_row_data[8];
+     oid = order_row_data[0];
+     sta = order_row_data[1];
+     pri = order_row_data[2];
+     pd = order_row_data[3];
+     ea = order_row_data[4];
+     shipadd = order_row_data[5];
+     shipcity = order_row_data[6];
+     shipstate = order_row_data[7];
+     shipzip = order_row_data[8];
+     usrid = order_row_data[9];
+
     }
 
 $('#datatableOrder').hide();
@@ -419,9 +429,47 @@ $('#szc').text(shipzip);
 $('#ui').text(usrid);
 $('#sa').text(shipadd);
 
+orderRef.on('value', gotOrderData, errOrderData); 
+
+function gotOrderData(data){
+    var getData = data.val();
+    var keys = Object.keys(getData);
+    var mainImageDiv = $('#displayImage');
+    for(var i = 0; i < keys.length; i++){
+        var k = keys[i];
+        var pic = getData[k].pictures;
+
+        if(pic == undefined)
+        {
+            var msg="Not pictures yet!";
+            var appenddivElement = "<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img1\">"+"<span>"+msg+"</span></div></div>";
+            $(mainImageDiv).append(appenddivElement);
+        }
+
+        else{
+        if(k == oid){    
+        for(var j=0; j<pic.length; j++)
+        {
+            var appenddivElement="<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img1\">"+"<img src=\""+pic[j]+"\"></div><hr></div>";
+                
+            $(mainImageDiv).append(appenddivElement);
+            console.log("Order ID = "+k);
+            console.log(j);
+            console.log(pic[j]);
+        }
+    }
+}
+    }
+}
+function errOrderData(err){
+    console.log('Error !');
+    console.log(err);
+}
+
 } );
 
 $('.orderbackBtn').on('click',function() {
+    $('#displayImage').html("");
     $('#orderdetails').hide();
     $('#changeTitle').text("Orders");
     $('#datatableOrder').show();
@@ -476,6 +524,7 @@ $('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
 
    return false;
 });	
+
 
 // ------------------------------------------------------------ //
 
@@ -538,7 +587,7 @@ $('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
         //console.log(data.val());
         var getData = data.val();
         var keys = Object.keys(getData);
-        console.log(keys);
+        //console.log(keys);
 
        /* $('#question1').text(getData[keys[0]].question);
         $('#answer1').text(getData[keys[0]].answer);
@@ -553,7 +602,7 @@ $('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
             var k = keys[i];
             var qu = getData[k].question;
             var an = getData[k].answer;
-            console.log(k);
+            //console.log(k);
             var divElement="<div id=\""+k+"\" class=\"waj text-center\"><div class=\"row\"><div class=\"col-md-12\">"+    
             "<h4 class=\"inner-title\">"+qu+"</h4></div><div class=\"col-md-6 text-left\"><p id=\"uname\" class=\"category text-left\">"+an+"</p></div>"+
              "<div class=\"col-md-6 text-right\"><button type=\"button\" style=\"margin-bottom: 0.5em;\" class=\"btn btn-danger btn-delete\"><i class=\"fas fa-close\"></i></button></div>"+
