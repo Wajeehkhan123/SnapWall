@@ -1,3 +1,5 @@
+//string to image function link
+//https://screenshots.firefox.com/f1Np98B3KEGBbvp8/stackoverflow.com
 $(document).ready(function () {
 
     'use strict';
@@ -442,7 +444,7 @@ function gotOrderData(data){
         if(pic == undefined)
         {
             var msg="Not pictures yet!";
-            var appenddivElement = "<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img1\">"+"<span>"+msg+"</span></div></div>";
+            var appenddivElement = "<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img1\">"+"<span id=\"imageText\">"+msg+"</span></div></div>";
             $(mainImageDiv).append(appenddivElement);
         }
 
@@ -450,19 +452,20 @@ function gotOrderData(data){
         if(k == oid){    
         for(var j=0; j<pic.length; j++)
         {
+            var l = j+1;
             var src = "data:image/jpeg;base64,";
             var item_image = pic[j];
             src += item_image;
             var newImage = document.createElement('img');
             newImage.src = src;
-            newImage.width = newImage.height = "80";
+            //newImage.attr({'height':'200', 'width':'200'});
             //document.querySelector('.img').innerHTML = newImage.outerHTML;//where to insert your image
-            var appenddivElement="<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img\">"+"<img src=\""+newImage.src+"\"></div><hr></div>";
-                
+            var appenddivElement="<div id=\""+k+"\" class=\"row forImage text-center\"><div class=\"col-md-12 img\">"+"<span>\ <b>Image No<b> \ "+l+" </span>"+"<br><br>"+"<img class=\"img-fluid\" style=\"height:400px;width:600px;\" src=\""+newImage.src+"\"><hr></div></div>"; 
+
             $(mainImageDiv).append(appenddivElement);
-            console.log("Order ID = "+k);
+            /*console.log("Order ID = "+k);
             console.log(j);
-            console.log(pic[j]);
+            console.log(pic[j]);*/
         }
     }
 }
@@ -477,6 +480,8 @@ function errOrderData(err){
 
 $('.orderbackBtn').on('click',function() {
     $('#displayImage').html("");
+    $('#imageText').text("");
+    $('#imageText').html("");
     $('#orderdetails').hide();
     $('#changeTitle').text("Orders");
     $('#datatableOrder').show();
