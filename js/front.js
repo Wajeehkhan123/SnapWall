@@ -460,7 +460,7 @@ function gotOrderData(data){
             newImage.src = src;
             //newImage.attr({'height':'200', 'width':'200'});
             //document.querySelector('.img').innerHTML = newImage.outerHTML;//where to insert your image
-            var appenddivElement="<div id=\""+k+"\" class=\"row forImage text-center\"><div class=\"col-md-12 img\">"+"<span>\ <b>Image No<b> \ "+l+" </span>"+"<br><br>"+"<img class=\"img-fluid\" style=\"height:200px;width:300px;\" src=\""+newImage.src+"\"><hr></div></div>"; 
+            var appenddivElement="<div id=\""+k+"\" class=\"row forImage text-center\"><div class=\"col-md-12 img\">"+"<span>\ <b>Image No<b> \ "+l+" </span>"+"<br><br>"+"<img class=\"img-fluid img-rounded\" style=\"height:300px;width:300px;\" src=\""+newImage.src+"\"><hr></div></div>"; 
 
             $(mainImageDiv).append(appenddivElement);
             /*console.log("Order ID = "+k);
