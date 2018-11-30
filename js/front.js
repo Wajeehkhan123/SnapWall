@@ -431,9 +431,9 @@ $('#szc').text(shipzip);
 $('#ui').text(usrid);
 $('#sa').text(shipadd);
 
-orderRef.on('value', gotOrderData, errOrderData); 
+//orderRef.on('value', gotOrderData, errOrderData); 
 
-function gotOrderData(data){
+/*function gotOrderData(data){
     var getData = data.val();
     var keys = Object.keys(getData);
     var mainImageDiv = $('#displayImage');
@@ -460,21 +460,20 @@ function gotOrderData(data){
             newImage.src = src;
             //newImage.attr({'height':'200', 'width':'200'});
             //document.querySelector('.img').innerHTML = newImage.outerHTML;//where to insert your image
-            var appenddivElement="<div id=\""+k+"\" class=\"row forImage text-center\"><div class=\"col-md-12 img\">"+"<span>\ <b>Image No<b> \ "+l+" </span>"+"<br><br>"+"<img class=\"img-fluid img-rounded\" style=\"height:300px;width:300px;\" src=\""+newImage.src+"\"><hr></div></div>"; 
+            var appenddivElement="<div id=\""+k+"\" class=\"row forImage text-center\"><div class=\"col-md-12 img\">"+"<span>\ <b>Image No<b> \ "+l+" </span>"+"<br><br>"+"<img class=\"img-fluid\" style=\"height:300px;width:300px;\" src=\""+newImage.src+"\"><hr></div></div>"; 
 
             $(mainImageDiv).append(appenddivElement);
-            /*console.log("Order ID = "+k);
-            console.log(j);
-            console.log(pic[j]);*/
+        
         }
     }
 }
     }
 }
+
 function errOrderData(err){
     console.log('Error !');
     console.log(err);
-}
+}*/
 
 } );
 
@@ -545,6 +544,50 @@ $('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
 
    return false;
 });	
+
+var oRef = firebase.database().ref().child("orders");
+oRef.on('value', gotOrderData, errOrderData);
+
+function gotOrderData(data){
+    var getData = data.val();
+    var keys = Object.keys(getData);
+    var ordersCounter=0;
+    var completeCounter=0;
+    var packCounter=0;
+    var assemblyCounter=0;
+    var printCounter=0;
+    for(var i = 0; i < keys.length; i++){
+        var k = keys[i];
+        ordersCounter++;
+        if(getData[k].status == "printing")
+        {
+            printCounter++;
+        }
+        if(getData[k].status == "packing")
+        {
+            packCounter++;
+        }
+        if(getData[k].status == "complete")
+        {
+            completeCounter++;
+        }
+        if(getData[k].status == "assembly")
+        {
+            assemblyCounter++;
+        }
+    }
+    $('#totalorders').text(ordersCounter);
+    $('#assembly').text(assemblyCounter);
+    $('#packing').text(packCounter);
+    $('#printing').text(printCounter);
+    $('#complete').text(completeCounter);
+
+}
+function errOrderData(err){
+    console.log('Error !');
+    console.log(err);
+}
+
 
 
 // ------------------------------------------------------------ //
