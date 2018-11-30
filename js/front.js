@@ -477,23 +477,6 @@ function errOrderData(err){
 
 } );
 
-$('.orderbackBtnUp').on('click',function() {
-    $('#displayImage').html("");
-    $('#imageText').text("");
-    $('#imageText').html("");
-    $('#orderdetails').hide();
-    $('#changeTitle').text("Orders");
-    $('#datatableOrder').show();
-});
-
-$('.orderbackBtn').on('click',function() {
-    $('#displayImage').html("");
-    $('#imageText').text("");
-    $('#imageText').html("");
-    $('#orderdetails').hide();
-    $('#changeTitle').text("Orders");
-    $('#datatableOrder').show();
-});
 
 $('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
     
@@ -545,10 +528,12 @@ $('#orders tbody').on( 'click', '.orderdelBtn', function (e) {
    return false;
 });	
 
-var oRef = firebase.database().ref().child("orders");
-oRef.on('value', gotOrderData, errOrderData);
 
-function gotOrderData(data){
+$('.orderDetail').hide();
+var oRef = firebase.database().ref().child("orders");
+oRef.on('value', OrderData, errorData);
+
+function OrderData(data){
     var getData = data.val();
     var keys = Object.keys(getData);
     var ordersCounter=0;
@@ -583,12 +568,92 @@ function gotOrderData(data){
     $('#complete').text(completeCounter);
 
 }
-function errOrderData(err){
+function errorData(err){
     console.log('Error !');
     console.log(err);
 }
 
+$('#printButton').on('click',function(){
+    $('.orderList').hide();
+    $('.orderDetail').show();
+    $('#changeOrderTitle').text("Details");
 
+    var orRef = firebase.database().ref().child("orders");
+    orRef.on('value', gotOrderData, errOrderData);
+
+    function gotOrderData(data){
+        var getData = data.val();
+        var keys = Object.keys(getData);
+        var mainImageDiv = $('#displayImage');
+        var mainChuss = $('#detailChuss');
+        for(var i = 0; i < keys.length; i++){
+            var k = keys[i];
+            var pic = getData[k].pictures;
+            var ordstatus = getData[k].status;
+
+            if(ordstatus == "printing"){
+                console.log(getData[k].key);
+
+            var submainChuss ="<h3 class=\"inner-title text-center\">\ Order Id = "+getData[k].key+" \</h3><hr><h4 class=\"inner-title\">\ Placement Date\</h4><p class=\"category\">"+getData[k].placement_date+"</p><h4 class=\"inner-title\">\ Expected Arrival\</h4><p class=\"category\">"+getData[k].expected_arrival+"</p><h4 class=\"inner-title\">\ Price\ </h4><p class=\"category\">"+getData[k].price+"</p><h4 class=\"inner-title\">\ Status\</h4><p class=\"category\">"+getData[k].status+"</p><h4 class=\"inner-title\">\ Shipping Province\</h4><p class=\"category\">"+getData[k].shipping_province+"</p><h4 class=\"inner-title\">\ City\ </h4><p class=\"category\">"+getData[k].shipping_city+"</p><h4 class=\"inner-title\">\ Shipping Address\ </h4><p class=\"category\">"+getData[k].shipping_address+"</p><h4 class=\"inner-title\">\ Zip Code\ </h4><p class=\"category\">"+getData[k].shipping_zipcode+"</p><h4 class=\"inner-title\">\ User Id\</h4><p class=\"category\">"+getData[k].user_id+"</p><hr>"; 
+            $(mainChuss).append(submainChuss);  
+            var titleDiv = "<h3 class=\"inner-title text-center\">\ Order Id = "+getData[k].key+" \</h3><hr>"; 
+            $(mainImageDiv).append(titleDiv);
+
+            if(pic == undefined)
+            {
+                var msg="Not pictures yet!";
+                var appenddivElement = "<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img1\">"+"<span id=\"imageText\">"+msg+"</span></div></div>";
+                $(mainImageDiv).append(appenddivElement);
+            }
+    
+            else{
+            
+            for(var j=0; j<pic.length; j++)
+            {
+                var l = j+1;
+                var src = "data:image/jpeg;base64,";
+                var item_image = pic[j];
+                src += item_image;
+                var newImage = document.createElement('img');
+                newImage.src = src;
+                //newImage.attr({'height':'200', 'width':'200'});
+                //document.querySelector('.img').innerHTML = newImage.outerHTML;//where to insert your image
+                var appenddivElement="<div id=\""+k+"\" class=\"row forImage text-center\"><div class=\"col-md-12 img\">"+"<h4>\ <b>Image No<b> \ "+l+" </h4>"+"<br><br>"+"<img class=\"img-fluid\" style=\"height:300px;width:300px;\" src=\""+newImage.src+"\"><hr></div></div>"; 
+    
+                $(mainImageDiv).append(appenddivElement);
+            
+            }
+        
+    }
+        }
+    }
+    }
+    
+    function errOrderData(err){
+        console.log('Error !');
+        console.log(err);
+    }
+});
+
+$('.orderbackBtnUp').on('click',function() {
+    $('#detailChuss').html("");
+    $('#displayImage').html("");
+    $('#imageText').text("");
+    $('#imageText').html("");
+    $('#orderdetails').hide();
+    $('#changeTitle').text("Orders");
+    $('#datatableOrder').show();
+});
+
+$('.orderbackBtn').on('click',function() {
+    $('#detailChuss').html("");
+    $('#displayImage').html("");
+    $('#imageText').text("");
+    $('#imageText').html("");
+    $('#orderdetails').hide();
+    $('#changeTitle').text("Orders");
+    $('#datatableOrder').show();
+});
 
 // ------------------------------------------------------------ //
 

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title id="changeTitle">Orders</title>
+    <title id="changeOrderTitle">Orders</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
@@ -85,7 +85,7 @@
                     <li><a href="logout.html"><span class="fas fa-sign-out-alt"></span>Logout </a></li>
           </ul>
         </nav>
-        <div class="content-inner" id="datatableOrder">
+        <div class="content-inner orderList" id="datatableOrder">
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
@@ -117,8 +117,9 @@
       </div> 
       </section> -->
 
-      <h2 class="title">Home</h2>
-
+      <div class="col-md-12 text-center" style="color: #785e4e; margin-top: 1em;">
+       <h2>Home</h2>
+      </div>
       <section class="charts">
         <div class="container-fluid">
           <div class="row">
@@ -136,55 +137,92 @@
           </div>
           <div class="row">
               <div class="col-lg-6">
-              <div class="Detail-card">
-                <div class="Detail-card-header">
-                  <h3 class="title">Assembly</h3>
-                </div>
-                <div class="Detail-card-content">
-                  <h4 class="inner-title">Orders pending for Assembly</h4>
-                  <p id="assembly" class="category"></p>
-                </div>
-              </div>
-              </div>
-              <div class="col-lg-6">
                   <div class="Detail-card">
                     <div class="Detail-card-header">
-                      <h3 class="title">Packing</h3>
+                      <h3 class="title">Printing</h3>
                     </div>
                     <div class="Detail-card-content">
-                      <h4 class="inner-title">Orders pending for Packing</h4>
-                      <p id="packing" class="category"></p>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h4 class="inner-title">Orders pending for Printing</h4>
+                        </div>
+                        <div class="col-md-6">
+                          <p id="printing" class="category text-left"></p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <button type="button" style="margin-bottom: 0.5em;" id="printButton" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  </div> 
+                  </div>
+                  <div class="col-lg-6">
+                      <div class="Detail-card">
+                        <div class="Detail-card-header">
+                          <h3 class="title">Assembly</h3>
+                        </div>
+                        <div class="Detail-card-content">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h4 class="inner-title">Orders pending for Assembly</h4>
+                            </div>
+                            <div class="col-md-6">
+                              <p id="assembly" class="category text-left"></p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                              <button type="button" style="margin-bottom: 0.5em;" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                <div class="Detail-card">
-                  <div class="Detail-card-header">
-                    <h3 class="title">Delivery</h3>
-                  </div>
-                  <div class="Detail-card-content">
-                    <h4 class="inner-title">Orders pending for Delivery</h4>
-                    <p id="printing" class="category"></p>
-                  </div>
-                </div>
-                </div>
-                <div class="col-lg-6">
                     <div class="Detail-card">
                       <div class="Detail-card-header">
-                        <h3 class="title">Complete</h3>
+                        <h3 class="title">Package</h3>
                       </div>
                       <div class="Detail-card-content">
-                        <h4 class="inner-title">Completed Orders</h4>
-                        <p id="complete" class="category"></p>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <h4 class="inner-title">Orders pending for Packing</h4>
+                          </div>
+                          <div class="col-md-6">
+                            <p id="packing" class="category text-left"></p>
+                          </div>
+                          <div class="col-md-6 text-right">
+                            <button type="button" style="margin-bottom: 0.5em;" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    </div> 
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="Detail-card">
+                          <div class="Detail-card-header">
+                            <h3 class="title">Complete</h3>
+                          </div>
+                          <div class="Detail-card-content">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <h4 class="inner-title">Orders pending for Complete</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <p id="complete" class="category text-left"></p>
+                              </div>
+                              <div class="col-md-6 text-right">
+                                <button type="button" style="margin-bottom: 0.5em;" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
               </div>  
   
         </div>
       </section>
+
           
           <!-- Page Footer-->
           <footer class="main-footer">
@@ -202,7 +240,7 @@
           </footer>
         </div>
         
-        <!--<div class="content-inner" id="orderdetails" style="display: none;">
+        <div class="content-inner orderDetail" id="orderdetails" style="display: none;">
              
             <header class="page-header">
               <div class="container-fluid">
@@ -223,8 +261,8 @@
                         <div class="Detail-card-header">
                             <h3 class="title">Order Details</h3>
                         </div>
-                        <div class="Detail-card-content"> 
-                            <h4 class="inner-title">Placment Date</h4>
+                        <div id="detailChuss" class="Detail-card-content"> 
+                            <!--<h4 class="inner-title">Placment Date</h4>
                             <p id="pd" class="category"></p>
                             <h4 class="inner-title">Expected Arrival</h4>
                             <p id="ea" class="category"></p>
@@ -241,9 +279,7 @@
                             <h4 class="inner-title">Zip Code</h4>
                             <p id="szc" class="category"></p>
                             <h4 class="inner-title">User Id</h4>
-                            <p id="ui" class="category"></p>
-                            <h4 class="inner-title">Referrals</h4>
-                            <p id="referral" class="category">User Referrals</p>
+                            <p id="ui" class="category"></p>-->
                         </div>
                     </div>
                   </div>
@@ -274,12 +310,12 @@
                   </div>
                   <div class="col-sm-6 text-right">
                     <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Shaheryar Tariq</a></p>
-                     Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)
+                     <!--Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
                   </div>
                 </div>
               </div>
             </footer>
-          </div>-->
+          </div>
 
       </div>
     </div>
