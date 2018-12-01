@@ -590,23 +590,10 @@ $('#printButton').on('click',function(){
             var k = keys[i];
             var pic = getData[k].pictures;
             var ordstatus = getData[k].status;
+            var images = new Array();
 
             if(ordstatus == "printing"){
-                console.log(getData[k].key);
-
-            var submainChuss ="<h3 class=\"inner-title text-center\">\ Order Id = "+getData[k].key+" \</h3><hr><h4 class=\"inner-title\">\ Placement Date\</h4><p class=\"category\">"+getData[k].placement_date+"</p><h4 class=\"inner-title\">\ Expected Arrival\</h4><p class=\"category\">"+getData[k].expected_arrival+"</p><h4 class=\"inner-title\">\ Price\ </h4><p class=\"category\">"+getData[k].price+"</p><h4 class=\"inner-title\">\ Status\</h4><p class=\"category\">"+getData[k].status+"</p><h4 class=\"inner-title\">\ Shipping Province\</h4><p class=\"category\">"+getData[k].shipping_province+"</p><h4 class=\"inner-title\">\ City\ </h4><p class=\"category\">"+getData[k].shipping_city+"</p><h4 class=\"inner-title\">\ Shipping Address\ </h4><p class=\"category\">"+getData[k].shipping_address+"</p><h4 class=\"inner-title\">\ Zip Code\ </h4><p class=\"category\">"+getData[k].shipping_zipcode+"</p><h4 class=\"inner-title\">\ User Id\</h4><p class=\"category\">"+getData[k].user_id+"</p><hr>"; 
-            $(mainChuss).append(submainChuss);  
-            var titleDiv = "<h3 class=\"inner-title text-center\">\ Order Id = "+getData[k].key+" \</h3><hr>"; 
-            $(mainImageDiv).append(titleDiv);
-
-            if(pic == undefined)
-            {
-                var msg="Not pictures yet!";
-                var appenddivElement = "<div id=\""+k+"\" class=\"row forImage\"><div class=\"col-md-12 img1\">"+"<span id=\"imageText\">"+msg+"</span></div></div>";
-                $(mainImageDiv).append(appenddivElement);
-            }
-    
-            else{
+                //console.log(getData[k].key); 
             
             for(var j=0; j<pic.length; j++)
             {
@@ -616,17 +603,19 @@ $('#printButton').on('click',function(){
                 src += item_image;
                 var newImage = document.createElement('img');
                 newImage.src = src;
+                images.push(newImage.src);
                 //newImage.attr({'height':'200', 'width':'200'});
                 //document.querySelector('.img').innerHTML = newImage.outerHTML;//where to insert your image
-                var appenddivElement="<div id=\""+k+"\" class=\"row forImage text-center\"><div class=\"col-md-12 img\">"+"<h4>\ <b>Image No<b> \ "+l+" </h4>"+"<br><br>"+"<img class=\"img-fluid\" style=\"height:300px;width:300px;\" src=\""+newImage.src+"\"><hr></div></div>"; 
-    
-                $(mainImageDiv).append(appenddivElement);
-            
+     
+               //var appenddivElement="<div class=\"col-md-4\">"+"<img class=\"img-fluid\" style=\"height:300px;width:300px;\" src=\""+newImage.src+"\"></div>"; 
+               //console.log(j+" "+images);
             }
-        
-    }
+
+            var submainChuss ="<h3 class=\"inner-title text-center\">\ Order Id = "+getData[k].key+" \</h3><hr><h4 class=\"inner-title\">\ Placement Date\</h4><p class=\"category\">"+getData[k].placement_date+"</p><h4 class=\"inner-title\">\ Expected Arrival\</h4><p class=\"category\">"+getData[k].expected_arrival+"</p><h4 class=\"inner-title\">\ Price\ </h4><p class=\"category\">"+getData[k].price+"</p><h4 class=\"inner-title\">\ Status\</h4><p class=\"category\">"+getData[k].status+"</p><h4 class=\"inner-title\">\ Shipping Province\</h4><p class=\"category\">"+getData[k].shipping_province+"</p><h4 class=\"inner-title\">\ City\ </h4><p class=\"category\">"+getData[k].shipping_city+"</p><h4 class=\"inner-title\">\ Shipping Address\ </h4><p class=\"category\">"+getData[k].shipping_address+"</p><h4 class=\"inner-title\">\ Zip Code\ </h4><p class=\"category\">"+getData[k].shipping_zipcode+"</p><h4 class=\"inner-title\">\ User Id\</h4><p class=\"category\">"+getData[k].user_id+"</p><h4 class=\"inner-title\">\ Order Images\</h4><hr><div class=\ row \ ><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[0]+"\"></div><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[1]+"\"></div><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[2]+"\"></div></div><hr><br>"; 
+            $(mainChuss).append(submainChuss);
         }
     }
+
     }
     
     function errOrderData(err){
@@ -638,8 +627,6 @@ $('#printButton').on('click',function(){
 $('.orderbackBtnUp').on('click',function() {
     $('#detailChuss').html("");
     $('#displayImage').html("");
-    $('#imageText').text("");
-    $('#imageText').html("");
     $('#orderdetails').hide();
     $('#changeTitle').text("Orders");
     $('#datatableOrder').show();
@@ -648,8 +635,6 @@ $('.orderbackBtnUp').on('click',function() {
 $('.orderbackBtn').on('click',function() {
     $('#detailChuss').html("");
     $('#displayImage').html("");
-    $('#imageText').text("");
-    $('#imageText').html("");
     $('#orderdetails').hide();
     $('#changeTitle').text("Orders");
     $('#datatableOrder').show();
