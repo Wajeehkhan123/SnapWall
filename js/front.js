@@ -1,7 +1,6 @@
+$(document).ready(function () {
 //string to image function link
 //https://screenshots.firefox.com/f1Np98B3KEGBbvp8/stackoverflow.com
-$(document).ready(function () {
-
     'use strict';
 
     var t="";
@@ -611,10 +610,68 @@ $('#printButton').on('click',function(){
                //console.log(j+" "+images);
             }
 
-            var submainChuss ="<h3 class=\"inner-title text-center\">\ Order Id = "+getData[k].key+" \</h3><hr><h4 class=\"inner-title\">\ Placement Date\</h4><p class=\"category\">"+getData[k].placement_date+"</p><h4 class=\"inner-title\">\ Expected Arrival\</h4><p class=\"category\">"+getData[k].expected_arrival+"</p><h4 class=\"inner-title\">\ Price\ </h4><p class=\"category\">"+getData[k].price+"</p><h4 class=\"inner-title\">\ Status\</h4><p class=\"category\">"+getData[k].status+"</p><h4 class=\"inner-title\">\ Shipping Province\</h4><p class=\"category\">"+getData[k].shipping_province+"</p><h4 class=\"inner-title\">\ City\ </h4><p class=\"category\">"+getData[k].shipping_city+"</p><h4 class=\"inner-title\">\ Shipping Address\ </h4><p class=\"category\">"+getData[k].shipping_address+"</p><h4 class=\"inner-title\">\ Zip Code\ </h4><p class=\"category\">"+getData[k].shipping_zipcode+"</p><h4 class=\"inner-title\">\ User Id\</h4><p class=\"category\">"+getData[k].user_id+"</p><h4 class=\"inner-title\">\ Order Images\</h4><hr><div class=\ row \ ><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[0]+"\"></div><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[1]+"\"></div><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[2]+"\"></div></div><hr><br>"; 
+            var submainChuss ="<div id=\""+getData[k].key+"\" class=\" printDetail \"><h3 class=\"inner-title text-center\">\ Order Id = "+getData[k].key+" \</h3><hr><h4 class=\"inner-title\">\ Placement Date\</h4><p class=\"category\">"+getData[k].placement_date+"</p><h4 class=\"inner-title\">\ Expected Arrival\</h4><p class=\"category\">"+getData[k].expected_arrival+"</p><h4 class=\"inner-title\">\ Price\ </h4><p class=\"category\">"+getData[k].price+"</p><h4 class=\"inner-title\">\ Status\</h4><p class=\"category\">"+getData[k].status+"</p><h4 class=\"inner-title\">\ Shipping Province\</h4><p class=\"category\">"+getData[k].shipping_province+"</p><h4 class=\"inner-title\">\ City\ </h4><p class=\"category\">"+getData[k].shipping_city+"</p><h4 class=\"inner-title\">\ Shipping Address\ </h4><p class=\"category\">"+getData[k].shipping_address+"</p><h4 class=\"inner-title\">\ Zip Code\ </h4><p class=\"category\">"+getData[k].shipping_zipcode+"</p><h4 class=\"inner-title\">\ User Id\</h4><p class=\"category\">"+getData[k].user_id+"</p><h4 class=\"inner-title\">\ Order Images\</h4><hr><div class=\ row \ ><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[0]+"\"></div><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[1]+"\"></div><div class=\ col-md-4 \ >"+"<img class=\"img-fluid\" style=\"height:300px;width:300px; margin: 1em; \" src=\""+images[2]+"\"></div></div><button type=\"button\" style=\"margin-bottom: 0.5em;\" class=\"btn btn-primary text-center confirm-btn\"><i class=\"fas fa-check\"></i>\ Confirm \ </button></div><hr><br>"; 
             $(mainChuss).append(submainChuss);
         }
     }
+
+    $(".confirm-btn").on("click",function(){
+        var btn = $(this);
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            
+          });
+          
+          swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, confirm it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
+               // $(btn).parent("div").parent("div").parent("div");
+               var div=$(btn).closest(".printDetail");
+               var keyHaiYeBhai=div.attr("id");
+               console.log(keyHaiYeBhai);
+              // div.remove();
+               firebase.database().ref("orders").child(keyHaiYeBhai).update({ "status": "assembly" });
+               div.remove();
+               //location.reload();
+               /*.remove()
+               .then(function() {
+                 console.log("Remove succeeded.");
+                 location.reload();
+               })
+               .catch(function(error) {
+                 console.log("Remove failed: " + error.message);
+               });*/
+               //div.parent("div").html("");
+               //console.log();
+              swalWithBootstrapButtons(
+                'Confirmed!',
+                'Your order is confirmed.',
+                'success'
+              )
+            } else if (
+              // Read more about handling dismissals
+              result.dismiss === swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons(
+                'Cancelled',
+                'Your order is safe :)',
+                'error'
+              )
+            }
+          });
+
+          return false;
+
+    });
 
     }
     
