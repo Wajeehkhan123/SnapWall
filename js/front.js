@@ -625,7 +625,7 @@ $('#printButton').on('click',function(){
           });
           
           swalWithBootstrapButtons({
-            title: 'Are you sure?',
+            title: 'Are you sure you want to print this?',
             text: "You won't be able to revert this!",
             type: 'warning',
             showCancelButton: true,
@@ -639,9 +639,18 @@ $('#printButton').on('click',function(){
                var keyHaiYeBhai=div.attr("id");
                console.log(keyHaiYeBhai);
               // div.remove();
-               firebase.database().ref("orders").child(keyHaiYeBhai).update({ "status": "assembly" });
-               div.remove();
-               //location.reload();
+              $("#detailChuss").html(""); 
+              firebase.database().ref("orders").child(keyHaiYeBhai).update({ "status": "assembly" })
+               .then(function() {
+                console.log("Updated succeeded.");
+                //location.reload();
+               // $('.kiaAzaab').html("");
+                
+              })
+              .catch(function(error) {
+                console.log("Updation failed: " + error.message);
+              });
+
                /*.remove()
                .then(function() {
                  console.log("Remove succeeded.");
