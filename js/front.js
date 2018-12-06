@@ -5,6 +5,7 @@ $(document).ready(function () {
 
     var t="";
     var o="";
+    var lockFlag = true;
 
     // ------------------------------------------------------- //
     // Search Box
@@ -760,9 +761,8 @@ $('.orderbackBtn').on('click',function() {
 
     var ques; 
     var ans;
-
-    faqRef.on('value', gotData, errData); 
-
+ 
+    faqRef.on('value', gotData, errData);
     function gotData(data){
         //console.log(data.val());
         var getData = data.val();
@@ -778,6 +778,7 @@ $('.orderbackBtn').on('click',function() {
         $('#question3').text(getData[keys[2]].question);
         $('#answer3').text(getData[keys[2]].answer);*/
  var mainDiv=$("#questionlist");
+        
         for(var i = 0; i < keys.length; i++){
             var k = keys[i];
             var qu = getData[k].question;
@@ -814,6 +815,7 @@ $('.orderbackBtn').on('click',function() {
             var button = $("<button type='button' style='margin-bottom: 0.5em;' class='btn btn-danger'><i class='fas fa-close'></i></button>").addClass("col-md-offset-6");
             $('.faqques').append(button);*/
         }
+    
         $(".btn-delete").on("click",function(){
             var btn = $(this);
 
@@ -838,10 +840,13 @@ $('.orderbackBtn').on('click',function() {
                    var keyHaiYeBhai=div.attr("id");
                    console.log();
                    div.remove();
+                   $("#questionlist").html(""); 
                    firebase.database().ref("faq").child(keyHaiYeBhai).remove()
                    .then(function() {
                      console.log("Remove succeeded.");
-                     location.reload();
+                     lockFlag = false;
+                     //location.reload();
+                     console.log(lockFlag);
                    })
                    .catch(function(error) {
                      console.log("Remove failed: " + error.message);
@@ -869,7 +874,8 @@ $('.orderbackBtn').on('click',function() {
 
         });
         
-    }
+    
+}
 
     function errData(err){
         console.log('Error !');
@@ -903,7 +909,7 @@ $('.orderbackBtn').on('click',function() {
         });
     });
 
-    $('#addImg').on('click', function() {
+   /* $('#addImg').on('click', function() {
         const ref = firebase.storage().ref();
 const file = document.querySelector('#image').files[0]
 const namefile = (+new Date()) + '-' + file.name;
@@ -918,7 +924,7 @@ task
     document.querySelector('#someImageTagID').src = url;
   })
   .catch(console.error);
-    });
+    });*/
 
 
     // ------------------------------------------------------- //
