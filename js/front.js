@@ -907,6 +907,7 @@ $('.orderbackBtn').on('click',function() {
             question: question,
             answer: answer
         });
+        swal({ title: "Loading...", text: "it may take some time!", type: "success" });
     });
 
    /* $('#addImg').on('click', function() {
