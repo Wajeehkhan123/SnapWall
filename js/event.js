@@ -198,6 +198,29 @@ if (dzFlag) {
     dzFlag = false;
 }
 
+function checkDate() {
+    var date = $(".modal-body #eventdate").val();
+    var selectedDate = new Date(date);
+    var now = new Date();
+    if (selectedDate < now) {
+        swal({ title: "Error!", text: "Date must be in the future!", type: "error" });
+        return false;
+    }
+    return true;
+}
+
+function editcheckDate() {
+    var date = $(".modal-body #editeventdate").val();
+    var selectedDate = new Date(date);
+    var now = new Date();
+    if (selectedDate < now) {
+        swal({ title: "Error!", text: "Date must be in the future!", type: "error" });
+        return false;
+    }
+    return true;
+}
+
+
 //adding an event
 $(document).on("click", ".addEvent", function () {
 
@@ -209,6 +232,9 @@ $(document).on("click", ".addEvent", function () {
     var name = $(".modal-body #name").val();
     var desc = $(".modal-body #desc").val();
     var date = $(".modal-body #eventdate").val();
+    if(checkDate() == false){
+        return false;
+    }
     var d = new Date($.now());
     var cdate = d.getDate()+"-"+(d.getMonth() + 1)+"-"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     var src = "data:image/jpeg;base64,";
@@ -296,6 +322,9 @@ $(document).on("click", ".editEvent", function () {
     var name = $(".modal-body #editname").val();
     var desc = $(".modal-body #editdesc").val();
     var date = $(".modal-body #editeventdate").val();
+    if(editcheckDate() == false){
+        return false;
+    }
     console.log(updatedImage);
 
     if(updatedImage!=undefined){
