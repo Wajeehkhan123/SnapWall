@@ -340,7 +340,7 @@ $(document).on("click", ".editEvent", function () {
 
     if(updatedImage!=undefined){
         var myFile = updatedImage;
-    var reader = new FileReader();
+    var reader = new FileReader(); 
     reader.readAsDataURL(myFile);
     reader.onload=function(){
         eventReference.child(eventId).update({ 
