@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,6 +21,9 @@
     <!-- Dropzone css -->
     <link rel="stylesheet" type="text/css" href="Dropzone/basic.css"/>
     <link rel="stylesheet" type="text/css" href="Dropzone/dropzone.css"/>
+    <!-- Summernote -->
+    <link rel="stylesheet" type="text/css" href="summernote/summernote-bs4.css"/>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet">
     <!-- The DataTables software is hosted on the CDN (powered by CloudFlare)-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.2/b-1.5.4/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.css"/>
     <!-- DataTable CSS-->
@@ -83,7 +86,7 @@
       </div>
         <div class="form-group">
           <label for="desc">Description:</label>
-          <textarea class="form-control" name="desc" id="desc" rows="5" placeholder="enter description" required></textarea>
+          <textarea class="form-control" placeholder="enter description" name="desc" id="desc" rows="10" required></textarea>
         </div>
         <div class="form-group">
           <label for="picture">Event Picture:</label>
@@ -120,7 +123,7 @@
       </div>
         <div class="form-group">
           <label for="desc">Description:</label>
-          <textarea class="form-control" name="editdesc" id="editdesc" rows="5" required></textarea>
+          <textarea class="form-control" name="editdesc" id="editdesc" rows="10" required></textarea>
         </div>
         <div class="form-group">
           <label for="picture">Event Picture:</label>
@@ -291,7 +294,9 @@
     <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
     <!-- Dropzone -->
     <script type="text/javascript" src="Dropzone/dropzone.js"></script>
-    <!--DataTable-->
+     <!-- Summernote -->
+     <script type="text/javascript" src="summernote/summernote-bs4.js"></script>
+    <!-- DataTable-->
     <script type="text/javascript" src="DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>

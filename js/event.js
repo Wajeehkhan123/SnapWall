@@ -8,7 +8,12 @@ $(document).ready(function () {
     var objectDropZone;
 
     // Event page
-	
+    
+    //add description summernote
+    $('#desc').summernote({
+        placeholder: 'enter description'
+      });
+
 	// ------------------------------------------------------ //
 	// Event DataTable
     // ------------------------------------------------------ //
@@ -220,7 +225,6 @@ function editcheckDate() {
     return true;
 }
 
-
 //adding an event
 $(document).on("click", ".addEvent", function () {
 
@@ -235,8 +239,15 @@ $(document).on("click", ".addEvent", function () {
     if(checkDate() == false){
         return false;
     }
-    var d = new Date($.now());
-    var cdate = d.getDate()+"-"+(d.getMonth() + 1)+"-"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+    var date = new Date($.now());
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    var cdate = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()+" "+strTime;
     var src = "data:image/jpeg;base64,";
     var myFile = objectDropZone.files[0];
     var reader = new FileReader();
@@ -301,7 +312,7 @@ $('#events tbody').on('click', '.editBtn', function (e) {
         eventId = row_data[5];
     }
     $(".modal-body #editname").val(name);
-    $(".modal-body #editdesc").text(desc);
+    $("#editdesc").summernote("code", desc);
     $(".modal-body #editeventdate").val(date);
     var mainDiv = $(".editeventpic");
     subDiv = "<img src=\""+profile+"\" style=\"height:150px;width:150px; \" class= \" rounded \" alt= \" event_image \">";
