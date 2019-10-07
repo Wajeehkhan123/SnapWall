@@ -389,7 +389,7 @@ $(document).on("click", "#closeModal", function () {
     $("#editEvenetModal").modal('hide');
 });
 
-//view user detail
+//view event detail
 $('#events').on('click', 'tbody .viewBtn', function () {
 
     var mainDivv = $(" ");
@@ -434,7 +434,7 @@ $('#changeTitle').text("Details");
 $('#details').show();
 
 $('#eventname').text(name);
-$('#eventdesc').text(desc);
+$('#eventdesc').html(desc);
 $('#dateevent').text(date);
 $('#eventcreated').text(cdate);
 
