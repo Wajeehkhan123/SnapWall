@@ -293,7 +293,7 @@ $(document).on("click", ".addEvent", function () {
     $("#addEvenetModal").modal('hide');
     }
         }
-    }
+    }     
 });
 
 //adding an event
