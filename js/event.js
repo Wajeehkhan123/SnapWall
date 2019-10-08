@@ -225,17 +225,32 @@ function editcheckDate() {
     return true;
 }
 
-//adding an event
 $(document).on("click", ".addEvent", function () {
+
+    var _URL = window.URL || window.webkitURL;
 
     if (objectDropZone.files.length == 0) {
         swal("Please drop the file to be uploaded"," ","error");
         return false;
     }
 
-    var name = $(".modal-body #name").val();
+    var img = new Image();
+    var imgwidth = 0;
+    var imgheight = 0;
+    var maxwidth = 600;
+    var maxheight = 200;
+    img.src = _URL.createObjectURL(objectDropZone.files[0]);
+    img.onload = function() {
+        imgwidth = this.width;
+        imgheight = this.height;  
+        if(imgwidth != maxwidth && imgheight != maxheight){
+            swal({ title: "Error!", text: "Please add image that is 200 pixels of height and 600 pixels of width!", type: "error" });
+            return false;
+        }
+        else{
+            var name = $(".modal-body #name").val();
     var desc = $(".modal-body #desc").val();
-    var date = $(".modal-body #eventdate").val();
+    var edate = $(".modal-body #eventdate").val();
     if(checkDate() == false){
         return false;
     }
@@ -258,7 +273,7 @@ $(document).on("click", ".addEvent", function () {
     var keeyy = eventReference.push({
         Name: name,
         Description: desc,
-        Event_Date: date,
+        Event_Date: edate,
         CreatedOn: cdate,
         Picture: reader.result
     }).getKey();
@@ -277,7 +292,63 @@ $(document).on("click", ".addEvent", function () {
     }
     $("#addEvenetModal").modal('hide');
     }
+        }
+    }
 });
+
+//adding an event
+/*$(document).on("click", ".addEvent", function () {
+
+    if (objectDropZone.files.length == 0) {
+        swal("Please drop the file to be uploaded"," ","error");
+        return false;
+    }
+
+    var name = $(".modal-body #name").val();
+    var desc = $(".modal-body #desc").val();
+    var edate = $(".modal-body #eventdate").val();
+    if(checkDate() == false){
+        return false;
+    }
+    var date = new Date($.now());
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    var cdate = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()+" "+strTime;
+    var src = "data:image/jpeg;base64,";
+    var myFile = objectDropZone.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(myFile);
+    reader.onload=function(){
+    var eventReference = firebase.database().ref().child("events");
+
+    var keeyy = eventReference.push({
+        Name: name,
+        Description: desc,
+        Event_Date: edate,
+        CreatedOn: cdate,
+        Picture: reader.result
+    }).getKey();
+    
+    if(keeyy != null){
+        eventReference.child(keeyy).update({ id: keeyy })
+        .then(function() {
+            swal({ title: "Added", text: "Event Added Successfully!", type: "success" })
+            .then(function() {
+               location.reload();
+            });
+        })
+        .catch(function(){
+            swal({ title: "Error!", text: "Event not added!", type: "error" });
+        });
+    }
+    $("#addEvenetModal").modal('hide');
+    }
+});*/
 
 //updating an event part 1
 var eventId;
@@ -315,7 +386,7 @@ $('#events tbody').on('click', '.editBtn', function (e) {
     $("#editdesc").summernote("code", desc);
     $(".modal-body #editeventdate").val(date);
     var mainDiv = $(".editeventpic");
-    subDiv = "<img src=\""+profile+"\" style=\"height:150px;width:150px; \" class= \" rounded \" alt= \" event_image \">";
+    subDiv = "<img src=\""+profile+"\" style=\"height:200px;width:600px; \" class= \" rounded \" alt= \" event_image \">";
     $(mainDiv).append(subDiv);
 
     $("#editEvenetModal").modal('show');
@@ -439,7 +510,7 @@ $('#dateevent').text(date);
 $('#eventcreated').text(cdate);
 
 mainDivv = $(".event_image");
-subDivv = "<img src=\""+pro+"\" style=\"height:200px;width:200px; margin: 1em; \" class= \" rounded \" alt= \" profile_image \">";
+subDivv = "<img src=\""+pro+"\" style=\" height:200px; width:600px; margin: 1em; \" class= \" rounded \" alt= \" profile_image \">";
 $(mainDivv).append(subDivv);
 
  var customerCounter = 1;
