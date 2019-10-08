@@ -58,13 +58,13 @@ var cust;
 
     rootRef.on("child_added", snap => {
 
-        name = snap.child("Name").val();
-        desc = snap.child("Description").val();
-        date = snap.child("Event_Date").val();
-        cdate = snap.child("CreatedOn").val();
-        profile = snap.child("Picture").val();
+        name = snap.child("title").val();
+        desc = snap.child("description").val();
+        date = snap.child("eventDate").val();
+        cdate = snap.child("dateCreated").val();
+        profile = snap.child("banner").val();
         id = snap.child("id").val();
-        cust = snap.child("Customers").val();
+        cust = snap.child("participants").val();
      
     if(name == null)
     {
@@ -225,7 +225,7 @@ function editcheckDate() {
     return true;
 }
 
-$(document).on("click", ".addEvent", function () {
+/*$(document).on("click", ".addEvent", function () {
 
     var _URL = window.URL || window.webkitURL;
 
@@ -271,11 +271,11 @@ $(document).on("click", ".addEvent", function () {
     var eventReference = firebase.database().ref().child("events");
 
     var keeyy = eventReference.push({
-        Name: name,
-        Description: desc,
-        Event_Date: edate,
-        CreatedOn: cdate,
-        Picture: reader.result
+        title: name,
+        description: desc,
+        eventDate: edate,
+        dateCreated: cdate,
+        banner: reader.result
     }).getKey();
     
     if(keeyy != null){
@@ -294,10 +294,10 @@ $(document).on("click", ".addEvent", function () {
     }
         }
     }     
-});
+});*/
 
 //adding an event
-/*$(document).on("click", ".addEvent", function () {
+$(document).on("click", ".addEvent", function () {
 
     if (objectDropZone.files.length == 0) {
         swal("Please drop the file to be uploaded"," ","error");
@@ -327,11 +327,11 @@ $(document).on("click", ".addEvent", function () {
     var eventReference = firebase.database().ref().child("events");
 
     var keeyy = eventReference.push({
-        Name: name,
-        Description: desc,
-        Event_Date: edate,
-        CreatedOn: cdate,
-        Picture: reader.result
+        title: name,
+        description: desc,
+        eventDate: edate,
+        dateCreated: cdate,
+        banner: reader.result
     }).getKey();
     
     if(keeyy != null){
@@ -348,7 +348,7 @@ $(document).on("click", ".addEvent", function () {
     }
     $("#addEvenetModal").modal('hide');
     }
-});*/
+});
 
 //updating an event part 1
 var eventId;
@@ -415,10 +415,10 @@ $(document).on("click", ".editEvent", function () {
     reader.readAsDataURL(myFile);
     reader.onload=function(){
         eventReference.child(eventId).update({ 
-            Name: name,
-            Description: desc,
-            Event_Date: date,
-            Picture: reader.result 
+            title: name,
+            description: desc,
+            eventDate: date,
+            banner: reader.result 
         })
     .then(function(){
         swal({title: "Updated", text: "Event updated!", type: "success"})
@@ -436,10 +436,10 @@ $(document).on("click", ".editEvent", function () {
     }
     if(updatedImage==undefined){
         eventReference.child(eventId).update({ 
-            Name: name,
-            Description: desc,
-            Event_Date: date,
-            Picture: profile 
+            title: name,
+            description: desc,
+            eventDate: date,
+            banner: profile 
         })
     .then(function(){
         swal({title: "Updated", text: "Event updated!", type: "success"})
