@@ -160,7 +160,7 @@ var cust;
               });
                 });
 			  
-              swalWithBootstrapButtons(
+              swalWithBootstrapButtons(   
                 'Deleted!',
                 'Your file has been deleted.',
                 'success'
