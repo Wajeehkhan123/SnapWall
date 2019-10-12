@@ -37,11 +37,6 @@ $(document).ready(function () {
             targets: [ 5 ],
             visible: false,
             searchable: false
-        },
-        {
-            targets: [ 6 ],
-            visible: false,
-            searchable: false
         }
        ]
 } );
@@ -62,7 +57,6 @@ var cust;
         desc = snap.child("description").val();
         date = snap.child("eventDate").val();
         cdate = snap.child("dateCreated").val();
-        profile = snap.child("banner").val();
         id = snap.child("id").val();
         cust = snap.child("participants").val();
      
@@ -96,7 +90,6 @@ var cust;
           desc,
           date,
           cdate,
-          profile,
           id,
           cust,
          '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button> <button type="button" class="btn btn-warning editBtn"><i class="fas fa-edit"></i></button> <button type="button" class="btn btn-danger delBtn"><i class="fas fa-trash"></i></button>'
@@ -120,11 +113,11 @@ var cust;
               			  if(rowname=="child"){
 				  
                   row_data = table.row($(this).parents('tr').prev('tr')).data();
-                  id = row_data[5];
+                  id = row_data[4];
 			  }
          else{
              row_data = table.row($(this).closest('tr')).data();
-             id = row_data[5];
+             id = row_data[4];
             }
 
         const swalWithBootstrapButtons = swal.mixin({
@@ -146,18 +139,26 @@ var cust;
 				var rowname=$(t).parents('tr').attr('class');
               			  if(rowname=="child"){
 
-                reference.child(id).remove().
+                var rou = firebase.storage().ref().child("events").child(id);
+                rou.delete()
+                .then(function() {
+                    reference.child(id).remove().
                   then(function(){
                       table.row($(t).parents('tr').prev('tr')).remove();
                   });
+                });
               }
-              reference.child(id).remove().
+              var rou = firebase.storage().ref().child("events").child(id);
+                rou.delete()
+                .then(function() {
+                    reference.child(id).remove().
               then(function(){
                 table
                 .row( $(t).parents('tr') )
                 .remove()
                 .draw();
               });
+                });
 			  
               swalWithBootstrapButtons(
                 'Deleted!',
@@ -225,78 +226,7 @@ function editcheckDate() {
     return true;
 }
 
-/*$(document).on("click", ".addEvent", function () {
-
-    var _URL = window.URL || window.webkitURL;
-
-    if (objectDropZone.files.length == 0) {
-        swal("Please drop the file to be uploaded"," ","error");
-        return false;
-    }
-
-    var img = new Image();
-    var imgwidth = 0;
-    var imgheight = 0;
-    var maxwidth = 600;
-    var maxheight = 200;
-    img.src = _URL.createObjectURL(objectDropZone.files[0]);
-    img.onload = function() {
-        imgwidth = this.width;
-        imgheight = this.height;  
-        if(imgwidth != maxwidth && imgheight != maxheight){
-            swal({ title: "Error!", text: "Please add image that is 200 pixels of height and 600 pixels of width!", type: "error" });
-            return false;
-        }
-        else{
-            var name = $(".modal-body #name").val();
-    var desc = $(".modal-body #desc").val();
-    var edate = $(".modal-body #eventdate").val();
-    if(checkDate() == false){
-        return false;
-    }
-    var date = new Date($.now());
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    var cdate = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()+" "+strTime;
-    var src = "data:image/jpeg;base64,";
-    var myFile = objectDropZone.files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(myFile);
-    reader.onload=function(){
-    var eventReference = firebase.database().ref().child("events");
-
-    var keeyy = eventReference.push({
-        title: name,
-        description: desc,
-        eventDate: edate,
-        dateCreated: cdate,
-        banner: reader.result
-    }).getKey();
-    
-    if(keeyy != null){
-        eventReference.child(keeyy).update({ id: keeyy })
-        .then(function() {
-            swal({ title: "Added", text: "Event Added Successfully!", type: "success" })
-            .then(function() {
-               location.reload();
-            });
-        })
-        .catch(function(){
-            swal({ title: "Error!", text: "Event not added!", type: "error" });
-        });
-    }
-    $("#addEvenetModal").modal('hide');
-    }
-        }
-    }     
-});*/
-
-//adding an event
+//add event
 $(document).on("click", ".addEvent", function () {
 
     if (objectDropZone.files.length == 0) {
@@ -319,23 +249,26 @@ $(document).on("click", ".addEvent", function () {
     minutes = minutes < 10 ? '0'+minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     var cdate = date.getDate()+"-"+(date.getMonth() + 1)+"-"+date.getFullYear()+" "+strTime;
-    var src = "data:image/jpeg;base64,";
-    var myFile = objectDropZone.files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(myFile);
-    reader.onload=function(){
     var eventReference = firebase.database().ref().child("events");
 
     var keeyy = eventReference.push({
         title: name,
         description: desc,
         eventDate: edate,
-        dateCreated: cdate,
-        banner: reader.result
+        dateCreated: cdate
     }).getKey();
     
     if(keeyy != null){
         eventReference.child(keeyy).update({ id: keeyy })
+        .then(function() {
+            const imageRef = firebase.storage().ref().child("events");
+            const imageFile = objectDropZone.files[0];
+            const imageName = keeyy;
+            const imageMetadata = {
+            contentType: imageFile.type
+        };
+        const task = imageRef.child(imageName).put(imageFile, imageMetadata);
+        task
         .then(function() {
             swal({ title: "Added", text: "Event Added Successfully!", type: "success" })
             .then(function() {
@@ -345,9 +278,9 @@ $(document).on("click", ".addEvent", function () {
         .catch(function(){
             swal({ title: "Error!", text: "Event not added!", type: "error" });
         });
-    }
+    });
+}
     $("#addEvenetModal").modal('hide');
-    }
 });
 
 //updating an event part 1
@@ -355,6 +288,7 @@ var eventId;
 var updatedImage;
 var subDiv;
 var profile;
+var refff1;
 $('#events tbody').on('click', '.editBtn', function (e) { 
 
     var rowname=$(this).parents('tr').attr('class');
@@ -370,8 +304,7 @@ $('#events tbody').on('click', '.editBtn', function (e) {
         name = row_data[0];
         desc = row_data[1];
         date = row_data[2];
-        profile = row_data[4];
-        eventId = row_data[5];
+        eventId = row_data[4];
     }
     else
     {
@@ -379,16 +312,20 @@ $('#events tbody').on('click', '.editBtn', function (e) {
         name = row_data[0];
         desc = row_data[1];
         date = row_data[2];
-        profile = row_data[4];
-        eventId = row_data[5];
+        eventId = row_data[4];
     }
     $(".modal-body #editname").val(name);
     $("#editdesc").summernote("code", desc);
     $(".modal-body #editeventdate").val(date);
-    var mainDiv = $(".editeventpic");
-    subDiv = "<img src=\""+profile+"\" style=\"height:200px;width:600px; \" class= \" rounded \" alt= \" event_image \">";
-    $(mainDiv).append(subDiv);
 
+refff1 = firebase.storage().ref().child("events").child(eventId);
+var urlPromise = refff1.getDownloadURL();
+urlPromise.then(url => {
+    var mainDiv = $(".editeventpic");
+    subDiv = "<img src=\""+url+"\" style=\"height:200px;width:600px; \" class= \" rounded \" alt= \" event_image \">";
+    $(mainDiv).append(subDiv);
+})
+    
     $("#editEvenetModal").modal('show');
 
     $('#editeventimage').on('change', function() { 
@@ -410,36 +347,43 @@ $(document).on("click", ".editEvent", function () {
     console.log(updatedImage);
 
     if(updatedImage!=undefined){
-        var myFile = updatedImage;
-    var reader = new FileReader(); 
-    reader.readAsDataURL(myFile);
-    reader.onload=function(){
         eventReference.child(eventId).update({ 
             title: name,
             description: desc,
             eventDate: date,
-            banner: reader.result 
         })
     .then(function(){
-        swal({title: "Updated", text: "Event updated!", type: "success"})
-        .then(function(){
-            location.reload();
-        });
+        refff1.delete()
+        .then(function() {
+            const imageRef = firebase.storage().ref().child("events");
+            const imageFile = updatedImage;
+            const imageName = eventId;
+            const imageMetadata = {
+            contentType: imageFile.type
+        };
+        const task = imageRef.child(imageName).put(imageFile, imageMetadata);
+        task
+        .then(function() {
+            swal({title: "Updated", text: "Event updated!", type: "success"})
+            .then(function(){
+                location.reload();
+            });
+        })
+        })     
     }).catch(function(){
-        swal({ title: "Error!", text: "Event not added!", type: "error" });
+        swal({ title: "Error!", text: "Event not updated!", type: "error" });
     });
 
     $(".modal-body #editcheck").val("");
     $("#editEvenetModal").modal('hide');
     $(".editeventpic").html("");
-    }
+
     }
     if(updatedImage==undefined){
         eventReference.child(eventId).update({ 
             title: name,
             description: desc,
-            eventDate: date,
-            banner: profile 
+            eventDate: date
         })
     .then(function(){
         swal({title: "Updated", text: "Event updated!", type: "success"})
@@ -447,7 +391,7 @@ $(document).on("click", ".editEvent", function () {
             location.reload();
         });
     }).catch(function(){
-        swal({ title: "Error!", text: "Event not added!", type: "error" });
+        swal({ title: "Error!", text: "Event not updated!", type: "error" });
     });
 
     $("#editEvenetModal").modal('hide');
@@ -473,8 +417,8 @@ $('#events').on('click', 'tbody .viewBtn', function () {
     var date;
     var cdate;
     var dd;
-    var pro;
     var cusst;
+    var refff;
 
     if(rowname=="child")
     {			  
@@ -483,9 +427,8 @@ $('#events').on('click', 'tbody .viewBtn', function () {
         desc = row_data[1];
         date = row_data[2];
         cdate = row_data[3];
-        pro = row_data[4];
-        dd = row_data[5];
-        cusst = row_data[6];
+        dd = row_data[4];
+        cusst = row_data[5];
     }
     else
     {
@@ -494,11 +437,12 @@ $('#events').on('click', 'tbody .viewBtn', function () {
         desc = row_data[1];
         date = row_data[2];
         cdate = row_data[3];
-        pro = row_data[4];
-        dd = row_data[5];
-        cusst = row_data[6];
+        dd = row_data[4];
+        cusst = row_data[5];
+
     }
     
+    console.log(refff);
 
 $('#datatable').hide();
 $('#changeTitle').text("Details");
@@ -509,10 +453,13 @@ $('#eventdesc').html(desc);
 $('#dateevent').text(date);
 $('#eventcreated').text(cdate);
 
-mainDivv = $(".event_image");
-subDivv = "<img src=\""+pro+"\" style=\" height:200px; width:600px; margin: 1em; \" class= \" rounded \" alt= \" profile_image \">";
-$(mainDivv).append(subDivv);
-
+refff = firebase.storage().ref().child("events").child(dd);
+var urlPromise = refff.getDownloadURL();
+urlPromise.then(url => {
+    mainDivv = $(".event_image");
+    subDivv = "<img src=\""+url+"\" style=\" height:200px; width:600px; margin: 1em; \" class= \" rounded \" alt= \" profile_image \">";
+    $(mainDivv).append(subDivv);
+})
  var customerCounter = 1;
  var headDiv = $(".customers");
 
