@@ -37,6 +37,11 @@ $(document).ready(function () {
             targets: [ 5 ],
             visible: false,
             searchable: false
+        },
+        {
+            targets: [ 6 ],
+            visible: false,
+            searchable: false
         }
        ]
 } );
@@ -59,6 +64,7 @@ var cust;
         cdate = snap.child("dateCreated").val();
         id = snap.child("id").val();
         cust = snap.child("participants").val();
+        profile = snap.child("banner").val();
      
     if(name == null)
     {
@@ -84,6 +90,10 @@ var cust;
     {
         cust = "NA";
     }
+    if(profile == null)
+    {
+        profile = "NA";
+    }
 
    $("#events").DataTable().row.add([
           name,
@@ -92,6 +102,7 @@ var cust;
           cdate,
           id,
           cust,
+          profile,
          '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button> <button type="button" class="btn btn-warning editBtn"><i class="fas fa-edit"></i></button> <button type="button" class="btn btn-danger delBtn"><i class="fas fa-trash"></i></button>'
 
     ]).draw();
@@ -268,12 +279,18 @@ $(document).on("click", ".addEvent", function () {
             contentType: imageFile.type
         };
         const task = imageRef.child(imageName).put(imageFile, imageMetadata);
-        task
-        .then(function() {
-            swal({ title: "Added", text: "Event Added Successfully!", type: "success" })
+        task.then(snapshot => snapshot.ref.getDownloadURL())
+        .then(url => {
+            console.log(url);
+            eventReference.child(keeyy).update({ banner: url })
             .then(function() {
-               location.reload();
-            });
+                swal({ title: "Added", text: "Event Added Successfully!", type: "success" })
+                .then(function() {
+                   location.reload();
+                }).catch(function(){
+                    swal({ title: "Error!", text: "Error in saving download URL!", type: "error" });
+                });
+            })
         })
         .catch(function(){
             swal({ title: "Error!", text: "Event not added!", type: "error" });
@@ -305,6 +322,7 @@ $('#events tbody').on('click', '.editBtn', function (e) {
         desc = row_data[1];
         date = row_data[2];
         eventId = row_data[4];
+        profile = row_data[6]; 
     }
     else
     {
@@ -313,6 +331,7 @@ $('#events tbody').on('click', '.editBtn', function (e) {
         desc = row_data[1];
         date = row_data[2];
         eventId = row_data[4];
+        profile = row_data[6];
     }
     $(".modal-body #editname").val(name);
     $("#editdesc").summernote("code", desc);
@@ -363,11 +382,18 @@ $(document).on("click", ".editEvent", function () {
         };
         const task = imageRef.child(imageName).put(imageFile, imageMetadata);
         task
-        .then(function() {
-            swal({title: "Updated", text: "Event updated!", type: "success"})
-            .then(function(){
-                location.reload();
-            });
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(url => {
+            console.log(url);
+            eventReference.child(eventId).update({ banner: url })
+            .then(function() {
+                swal({title: "Updated", text: "Event updated!", type: "success"})
+                .then(function() {
+                   location.reload();
+                }).catch(function(){
+                    swal({ title: "Error!", text: "Error in saving download URL!", type: "error" });
+                });
+            })
         })
         })     
     }).catch(function(){
@@ -383,7 +409,8 @@ $(document).on("click", ".editEvent", function () {
         eventReference.child(eventId).update({ 
             title: name,
             description: desc,
-            eventDate: date
+            eventDate: date,
+            banner: profile
         })
     .then(function(){
         swal({title: "Updated", text: "Event updated!", type: "success"})
