@@ -221,10 +221,8 @@ var profile;
         $('#ssid').text(ssid);
         $('#status').text(statuss);
 
-        var src = "data:image/jpeg;base64,";
-        src += profile;
         mainDiv = $(".profile_image");
-        subDiv = "<img src=\""+src+"\" style=\"height:200px;width:200px; margin: 1em; \" class= \" rounded \" alt= \" profile_image \">";
+        subDiv = "<img src=\""+profile+"\" style=\"height:200px;width:200px; margin: 1em; \" class= \" rounded \" alt= \" profile_image \">";
         $(mainDiv).append(subDiv);
 
        /* var reviewCounter = 0;

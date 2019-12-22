@@ -32,8 +32,8 @@ $(document).ready(function () {
             targets: [ 4 ],
             visible: false,
             searchable: false
-        },
-        {
+        }//,
+        /*{
             targets: [ 5 ],
             visible: false,
             searchable: false
@@ -42,7 +42,7 @@ $(document).ready(function () {
             targets: [ 6 ],
             visible: false,
             searchable: false
-        }
+        }*/
        ]
 } );
 
@@ -50,9 +50,9 @@ var name;
 var desc;
 var date;
 var cdate;
-var profile;
+//var profile;
 var id;
-var cust;
+//var cust;
 
     var rootRef = firebase.database().ref().child("events");
 
@@ -63,8 +63,8 @@ var cust;
         date = snap.child("eventDate").val();
         cdate = snap.child("dateCreated").val();
         id = snap.child("id").val();
-        cust = snap.child("participants").val();
-        profile = snap.child("banner").val();
+       // cust = snap.child("participants").val();
+        //profile = snap.child("banner").val();
      
     if(name == null)
     {
@@ -86,14 +86,14 @@ var cust;
     {
         id = "NA";
     }
-    if(cust == null)
+   /* if(cust == null)
     {
         cust = "NA";
     }
     if(profile == null)
     {
         profile = "NA";
-    }
+    }*/
 
    $("#events").DataTable().row.add([
           name,
@@ -101,13 +101,15 @@ var cust;
           date,
           cdate,
           id,
-          cust,
-          profile,
-         '<button type="button" class="btn btn-primary viewBtn"><i class="fas fa-eye"></i></button> <button type="button" class="btn btn-warning editBtn"><i class="fas fa-edit"></i></button> <button type="button" class="btn btn-danger delBtn"><i class="fas fa-trash"></i></button>'
+          //cust,
+          //profile,
+         '<button type="button" style="background-color:#ec0b43;color:white;" class="btn viewBtn"><i class="fas fa-eye"></i> View Attendees</button>'
 
     ]).draw();
 
 });
+
+// buuttons => <button type="button" class="btn btn-warning editBtn"><i class="fas fa-edit"></i></button> <button type="button" class="btn btn-danger delBtn"><i class="fas fa-trash"></i></button>
 
 
 //delete event	
@@ -444,7 +446,7 @@ $('#events').on('click', 'tbody .viewBtn', function () {
     var date;
     var cdate;
     var dd;
-    var cusst;
+    //var cusst;
     var refff;
 
     if(rowname=="child")
@@ -455,7 +457,7 @@ $('#events').on('click', 'tbody .viewBtn', function () {
         date = row_data[2];
         cdate = row_data[3];
         dd = row_data[4];
-        cusst = row_data[5];
+        //cusst = row_data[5];
     }
     else
     {
@@ -465,17 +467,15 @@ $('#events').on('click', 'tbody .viewBtn', function () {
         date = row_data[2];
         cdate = row_data[3];
         dd = row_data[4];
-        cusst = row_data[5];
+       // cusst = row_data[5];
 
     }
-    
-    console.log(refff);
 
 $('#datatable').hide();
-$('#changeTitle').text("Details");
+$('#changeTitle').text("Event Attendies");
 $('#details').show();
 
-$('#eventname').text(name);
+/*$('#eventname').text(name);
 $('#eventdesc').html(desc);
 $('#dateevent').text(date);
 $('#eventcreated').text(cdate);
@@ -486,43 +486,68 @@ urlPromise.then(url => {
     mainDivv = $(".event_image");
     subDivv = "<img src=\""+url+"\" style=\" height:200px; width:600px; margin: 1em; \" class= \" rounded \" alt= \" profile_image \">";
     $(mainDivv).append(subDivv);
-})
- var customerCounter = 1;
- var headDiv = $(".customers");
+})*/
 
+var attendiesReff = firebase.database().ref().child("eventAttendees").child(dd);
 
-if(cusst != "NA"){
-    for(let i = 0; i < Object.values(cusst).length; i++){
-        console.log(Object.values(cusst)[i].id);
+console.log(attendiesReff);
+
+attendiesReff.on("value", snap => {
     
-       var nn=null;
-       var ee=null;
-       var custRef = firebase.database().ref().child("users").child(Object.values(cusst)[i].id);
+    var attendiesCount = 0; 
+
+    snap.forEach(function(snapshot){
+        attendiesCount++;
+    });
+
+    console.log(attendiesCount);
+
+    var headDiv = $(".customers");
+
+    if(attendiesCount == 0){
+        var dataDiv = "<p class=\" text-center category \">No Attendees for this event.</p>"; 
+        $(headDiv).append(dataDiv);
+        console.log("No Attendees")
+    }
+    else
+    {
+        var customerCounter = 1;
+
+        snap.forEach(function(snapshot){
+
+            var val = snapshot.val();
     
-       custRef.on("value", snap => {
-            nn = snap.child("name").val();
-            ee = snap.child("email").val();
-            console.log(nn);
-            console.log(ee);
-            
-            var dataDiv ="<h3 class=\" text-center \">("+customerCounter+")</h3><h4 class=\" inner-title \">Participiant Name</h4><p class=\" category \">"+ nn +"</p><h4 class=\" inner-title \">Participiant Email</h4><p class=\" category \">"+ ee +"</p>"; 
-            $(headDiv).append(dataDiv);
-            customerCounter++;
+            console.log(val["userId"]);
+    
+            var eventUserId = val["userId"];
+    
+            var customerReff = firebase.database().ref().child("users").child(eventUserId);
+    
+            customerReff.on("value", snap => {
+                var nn = snap.child("name").val();
+                var ee = snap.child("email").val();
+                var profile = snap.child("profile_pic").val();
+
+                console.log(profile);
+
+                var dataDiv ="<h3 class=\" text-center \">("+customerCounter+")</h3><h4 class=\" inner-title \">Participiant Name</h4><p class=\" category \">"+ nn +"</p><h4 class=\" inner-title \">Participiant Email</h4><p class=\" category \">"+ ee +"</p><h4 class=\" inner-title \">Profile Image</h4><p class=\" text-center category \"><img src=\""+profile+"\" style=\" height:200px; width:200px; \" class= \" rounded \" alt= \" profile_image \"></p>"; 
+                $(headDiv).append(dataDiv);
+                customerCounter++;
+
+            });
+    
         });
     }
-}
-if(cusst == "NA")
-{
-    var dataDiv = "<p class=\" text-center category \">No Participiant for this event.</p>"; 
-    $(headDiv).append(dataDiv);
-}
+});
+
+
 });
 
 
 //back button
 $('.backBtn').on('click',function() {
 $('#details').hide();
-$('#changeTitle').text("Events");
+$('#changeTitle').text("Events Attendies");
 $('#datatable').show();
 $('.event_image').html("");
 $('.customers').html("");
