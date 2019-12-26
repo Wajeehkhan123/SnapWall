@@ -557,11 +557,13 @@ attendiesReff.on("value", snap => {
 
 //back button
 $('.backBtn').on('click',function() {
-$('#details').hide();
+/*$('#details').hide();
 $('#changeTitle').text("Events Attendies");
 $('#datatable').show();
 $('.event_image').html("");
 $('.customers').html("");
+$('.check').html("");*/
+location.reload();
 });
 
 
