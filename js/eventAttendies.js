@@ -505,8 +505,9 @@ attendiesReff.on("value", snap => {
     var headDiv = $(".customers");
 
     if(attendiesCount == 0){
-        var dataDiv = "<p class=\" text-center category \">No Attendees for this event.</p>"; 
-        $(headDiv).append(dataDiv);
+        $("#eventAttendees").DataTable();
+       // var dataDiv = "<p class=\" text-center category \">No Attendees for this event.</p>"; 
+        //$(headDiv).append(dataDiv);
         console.log("No Attendees")
     }
     else
@@ -520,7 +521,8 @@ attendiesReff.on("value", snap => {
             console.log(val["userId"]);
     
             var eventUserId = val["userId"];
-    
+            var eventUserPasscode = val["passcode"];
+
             var customerReff = firebase.database().ref().child("users").child(eventUserId);
     
             customerReff.on("value", snap => {
@@ -530,8 +532,17 @@ attendiesReff.on("value", snap => {
 
                 console.log(profile);
 
-                var dataDiv ="<h3 class=\" text-center \">("+customerCounter+")</h3><h4 class=\" inner-title \">Participiant Name</h4><p class=\" category \">"+ nn +"</p><h4 class=\" inner-title \">Participiant Email</h4><p class=\" category \">"+ ee +"</p><h4 class=\" inner-title \">Profile Image</h4><p class=\" text-center category \"><img src=\""+profile+"\" style=\" height:200px; width:200px; \" class= \" rounded \" alt= \" profile_image \"></p>"; 
-                $(headDiv).append(dataDiv);
+                $("#eventAttendees").DataTable().row.add([
+                    '<div class="text-center">'+customerCounter+'</div>',
+                    '<div class="text-center">'+nn+'</div>',
+                    '<div class="text-center">'+eventUserPasscode+'</div>',
+                    '<div class="text-center">'+ee+'</div>',
+                    '<div class="text-center"><img class="text-center" src=' +profile+' style=\" height:50px; width:50px; \" class= \" rounded \" alt= \" profile_image \"></div>'
+          
+              ]).draw();
+
+                //var dataDiv ="<h3 class=\" text-center \">("+customerCounter+")</h3><h4 class=\" inner-title \">Participiant Name</h4><p class=\" category \">"+ nn +"</p><h4 class=\" inner-title \">Participiant Email</h4><p class=\" category \">"+ ee +"</p><h4 class=\" inner-title \">Participiant Passcode</h4><p class=\" category \">"+ eventUserPasscode +"</p><h4 class=\" inner-title \">Profile Image</h4><p class=\" text-center category \"><img src=\""+profile+"\" style=\" height:200px; width:200px; \" class= \" rounded \" alt= \" profile_image \"></p>"; 
+                //$(headDiv).append(dataDiv);
                 customerCounter++;
 
             });
