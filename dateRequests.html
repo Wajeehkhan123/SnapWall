@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html>
+ <!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title id="changeTitle">Users</title>
+    <title id="changeTitle">Date Requests</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
-    <!-- Bootstrap CSS-->
+    <!-- Bootstrap CSS--> 
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
     <!-- theme stylesheet-->
     <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Dropzone css -->
+    <link rel="stylesheet" type="text/css" href="Dropzone/basic.css"/>
+    <link rel="stylesheet" type="text/css" href="Dropzone/dropzone.css"/>
+    <!-- Summernote -->
+    <link rel="stylesheet" type="text/css" href="summernote/summernote-bs4.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet">
     <!-- The DataTables software is hosted on the CDN (powered by CloudFlare)-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.2/b-1.5.4/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.css"/>
     <!-- DataTable CSS-->
@@ -56,6 +62,7 @@
           </div>
         </nav>
       </header>
+
       <div class="page-content d-flex align-items-stretch"> 
         <!-- Side Navbar -->
         <nav class="side-navbar">
@@ -68,11 +75,11 @@
           </div>
           <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
           <ul class="list-unstyled">
-                    <li class="active"><a href="users.html"><span class="fas fa-user"></span>Users </a></li>
+                    <li><a href="users.html"><span class="fas fa-user"></span>Users </a></li>
                     <li><a href="events.html"> <span class="fas fa-calendar"></span>Events </a></li>
                     <li><a href="eventAttendies.html"> <span class="fas fa-users"></span>Events Attendees </a></li>
-                    <li><a href="dateRequests.html"> <span class="fas fa-user-secret"></span>Date Requests </a></li>
-                    <!--<li><a href="about.html"><span class="fas fa-info-circle"></span>About Us </a></li>
+                    <li class="active"><a href="dateRequests.html"> <span class="fas fa-user-secret"></span>Date Requests </a></li>
+                  <!--  <li><a href="about.html"><span class="fas fa-info-circle"></span>About Us </a></li>
                     <li><a href="faq.html"><span class="fas fa-question"></span>FAQ </a></li>
                     <li><a href="logout.html"><span class="fas fa-sign-out-alt"></span>Logout </a></li> -->
           </ul>
@@ -81,34 +88,29 @@
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom">Users</h2>
+              <h2 class="no-margin-bottom">Date Requests</h2>
             </div>
           </header>
 
 		  <section class="tables">
         <div class="container-fluid">
-		    <table id="users" class="table table-bordered table-hover display responsive no-wrap" width="100%">
+		    <table id="requests" class="table table-bordered table-hover display responsive no-wrap" width="100%">
           <thead>
-            <!--<th>Id</th>-->
-            <th>Name</th>
-            <th>Email</th>
-            <th>Type</th>
-            <th>DOB</th>
-            <th>ID</th>
-            <th>Verify</th>
-            <th>Online</th>
-            <th>Status</th>
-            <th>Ssid</th>
-            <th>Reviews</th>
-            <th>Profile Picture</th>
+            <th>Gender</th>
+            <th>Description</th>
+            <th>Request Date</th>
+            <th>Contact</th>
+            <th>Age</th>
             <th>Actions</th>
+            <th>Id</th>
+            <th>UserId</th>
           </thead>
           <tbody id="ubody">
             
           </tbody>
         </table>
       </div> 
-      </section>  
+      </section>
           
           <!-- Page Footer-->
           <footer class="main-footer">
@@ -124,97 +126,73 @@
             </div>
           </footer>
         </div>
-        
+
         <div class="content-inner" id="details" style="display: none;">
-            <!-- Page Header-->
-            <header class="page-header">
-              <div class="container-fluid">
-                <h2 class="no-margin-bottom">Details</h2>
-              </div>
-            </header>
-    
-            <section class="charts">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-lg-3"></div>
-                  <div class="col-lg-6">
-                    <div class="Detail-card">
-                        <div class="Detail-card-header">
-                            <h3 class="title">User Details</h3>
-                        </div>
-                        <div class="text-center profile_image">
-                          
-                        </div>
-                        <div class="Detail-card-content"> 
-                            <h4 class="inner-title">Name</h4>
-                            <p id="uname" class="category"></p>
-                            <h4 class="inner-title">Email</h4>
-                            <p id="uemail" class="category"></p>
-                            <h4 class="inner-title">Account Type</h4>
-                            <p id="utype" class="category"></p>
-                            <h4 class="inner-title">DOB</h4>
-                            <p id="dob" class="category"></p>
-                            <h4 class="inner-title">Is Verify?</h4>
-                            <p id="verify" class="category"></p>
-                            <h4 class="inner-title">Online</h4>
-                            <p id="online" class="category"></p>
-                            <h4 class="inner-title">SSID</h4>
-                            <p id="ssid" class="category"></p>
-                            <h4 class="inner-title">Status</h4>
-                            <p id="status" class="category"></p><br />
-                           <!--<h2 class="text-center">Reviews</h2>-->
-                            <div class="review">
-                              
-                            </div>
-                            <!--<h4 class="inner-title">Referrals</h4>
-                            <p id="referral" class="category">User Referrals</p>-->
-                        </div>
-                        <div class="col-lg-3"></div>
-                    </div>
-                  </div>
-    
-                  <!--<div class="col-lg-6">
-                      <div class="Detail-card">
-                          <div class="Detail-card-header">
-                              <h3 class="title">User Order Details</h3>
-                          </div>
-                          <div class="Detail-card-content">
-                             
-                          </div>
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">Request Details</h2>
+            </div>
+          </header>
+  
+          <section class="charts">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                  <div class="Detail-card">
+                      <div class="Detail-card-header">
+                          <h3 class="title">User Information</h3>
                       </div>
-                  </div>-->
-                  <div class="col-lg-12">
-                      <button type="button" style="margin-bottom: 3em; background: #ec0b43;border-color: #ec0b43;" class="btn btn-primary backBtn"><i class="fas fa-arrow-left"></i> Back</button>
-                    </div>
+                      <div class="text-center user_image">
+                        
+                      </div>
+                      <div class="Detail-card-content"> 
+                          <h4 class="inner-title">Name</h4>
+                          <p id="userName" class="category"></p>
+                          <h4 class="inner-title">Email</h4>
+                          <p id="userEmail" class="category"></p>
+                      </div>
+                      <div class="col-lg-2"></div>
                   </div>
                 </div>
-            </section>
-
-            <!-- Page Footer-->
-            <footer class="main-footer">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <p>chatApp &copy; 2019</p>
-                  </div>
-                  <div class="col-sm-6 text-right">
-                    <p>Design by <a href="https://www.freelancer.com/u/shaheryartariq90" class="external">Shaheryar Tariq</a></p>
+                <div style="margin-top: 1rem;" class="col-lg-12">
+                    <button type="button" style="margin-bottom: 3em; background: #ec0b43;border-color: #ec0b43;" class="btn btn-primary backBtn"><i class="fas fa-arrow-left"></i> Back</button>
                   </div>
                 </div>
               </div>
-            </footer>
+          </section>
 
-          </div>
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>chatApp &copy; 2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p>Design by <a href="https://www.freelancer.com/u/shaheryartariq90" class="external">Shaheryar Tariq</a></p>
+                </div>
+              </div>
+            </div>
+          </footer>
+
+        </div>
+
 
       </div>
     </div>
     <!-- JavaScript files-->
     <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/popper.js/umd/popper.min.js"> </script> 
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-    <!--DataTable-->
+    <!-- Dropzone -->
+    <script type="text/javascript" src="Dropzone/dropzone.js"></script>
+     <!-- Summernote -->
+     <script type="text/javascript" src="summernote/summernote-bs4.js"></script>
+    <!-- DataTable-->
     <script type="text/javascript" src="DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
@@ -238,6 +216,6 @@
     </script>
 
     <!-- Main File-->
-    <script src="js/user.js"></script>
+    <script src="js/dateRequest.js"></script>
   </body>
 </html>
