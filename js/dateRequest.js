@@ -8,11 +8,6 @@ $(document).ready(function () {
     var objectDropZone;
 
     // Date Request page
-    
-    //add description summernote
-    $('#desc').summernote({
-        placeholder: 'enter description'
-      });
 
 	// ------------------------------------------------------ //
 	// Date Request DataTable
@@ -29,12 +24,12 @@ $(document).ready(function () {
        },
        columnDefs: [
         {
-            targets: [ 6 ],
+            targets: [ 7 ],
             visible: false,
             searchable: false
         },
         {
-            targets: [ 7 ],
+            targets: [ 8 ],
             visible: false,
             searchable: false
         }
@@ -46,6 +41,7 @@ var desc;
 var date;
 var contact;
 var age;
+var status;
 var id;
 var userId;
 
@@ -60,6 +56,7 @@ var userId;
         age = snap.child("age").val();
         id = snap.child("id").val();
         userId = snap.child("userId").val();
+        status = snap.child("status").val();
      
     if(gender == null)
     {
@@ -89,6 +86,10 @@ var userId;
     {
         age = "NA";
     }
+    if(status == null)
+    {
+        age = "NA";
+    }
 
    $("#requests").DataTable().row.add([
           gender,
@@ -96,7 +97,8 @@ var userId;
           date,
           contact,
           age,
-          '<button type="button" style="background-color:#ec0b43;color:white;" class="btn viewBtn"><i class="fas fa-eye"></i> User Details</button>',
+          status,
+          '<div class="text-center"><button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i></button><button type="button" style="margin:5px; color:white;" class="btn btn-warning btn-sm editBtn"><i class="fas fa-edit"></i></button></div>',
           id,
           userId
 
@@ -120,6 +122,7 @@ $('#requests').on('click', 'tbody .viewBtn', function () {
     var age;
     var id;
     var userId;
+    var status;
 
     if(rowname=="child")
     {			  
@@ -129,8 +132,9 @@ $('#requests').on('click', 'tbody .viewBtn', function () {
         date = row_data[2];
         contact = row_data[3];
         age = row_data[4];
-        id = row_data[6];
-        userId = row_data[7];
+        status = row_data[5];
+        id = row_data[7];
+        userId = row_data[8];
     }
     else
     {
@@ -140,8 +144,9 @@ $('#requests').on('click', 'tbody .viewBtn', function () {
         date = row_data[2];
         contact = row_data[3];
         age = row_data[4];
-        id = row_data[6];
-        userId = row_data[7];
+        status = row_data[5];
+        id = row_data[7];
+        userId = row_data[8];
     }
 
 $('#datatable').hide();
@@ -169,10 +174,85 @@ userReff.on("value", snap => {
 
 });
 
+//updating request status
+var requestId;
+$('#requests tbody').on('click', '.editBtn', function (e) { 
+
+    var rowname=$(this).parents('tr').attr('class');
+    var row_data;
+    var status;
+
+    if(rowname=="child")
+    {			  
+        row_data = table.row($(this).parents('tr').prev('tr')).data();
+        status = row_data[5];
+        requestId = row_data[7];
+    }
+    else
+    {
+        row_data = table.row($(this).closest('tr')).data();
+        status = row_data[5];
+        requestId = row_data[7];
+    }
+
+    var newStatus = new Option("new", "new");
+    var inProgressStatus = new Option("in progress", "in progress");
+    var completeStatus = new Option("complete", "complete");
+    
+    $(newStatus).html("new");
+    $("#statusId").append(newStatus);
+
+    $(inProgressStatus).html("in progress");
+    $("#statusId").append(inProgressStatus);
+
+    $(completeStatus).html("complete");
+    $("#statusId").append(completeStatus);
+
+    if(status == "new" || status == "New"){
+        $(newStatus).attr("selected","selected");
+    }
+    else if(status == "complete" || status == "Complete"){
+        $(completeStatus).attr("selected","selected");
+    }
+    else if(status == "in progress" || status == "In progress"){
+        $(inProgressStatus).attr("selected","selected");
+    }
+
+    $("#editRequestModal").modal('show');
+
+});
+
+//close modal event
+$(document).on("click", "#closeModal", function () {
+    $("#statusId").html("");
+    $("#editRequestModal").modal('hide');
+});
+
+//update button event
+$(document).on("click", "#updateStatus", function () {
+
+    var requestReference = firebase.database().ref().child("dateRequests");
+
+    var updatedStatus = $(".modal-body #statusId").val();
+
+    requestReference.child(requestId).update({ 
+        status: updatedStatus
+    })
+    .then(function() {
+        swal({title: "Updated", text: "Status updated!", type: "success"})
+        .then(function() {
+           location.reload();
+        }).catch(function(){
+            swal({ title: "Error!", text: "Error in updating the status!", type: "error" });
+        });
+    });
+
+});
+
 
 //back button
 $('.backBtn').on('click',function() {
-location.reload();
+    location.reload();
 });
 
 
