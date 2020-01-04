@@ -115,8 +115,23 @@
             </div>
           </header>
 
-		  <section class="tables">
+		  <section style="padding-top: 16px;" class="tables">
         <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-9"></div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="filterStatus">Filter By Status:</label>
+                <select class="form-control" id="filterStatus">
+                  <option>All</option>
+                  <option>new</option>
+                  <option>in progress</option>
+                  <option>complete</option>
+                </select>
+              </div>
+            </div>
+          </div>
+         
 		    <table id="requests" class="table table-bordered table-hover display responsive no-wrap" width="100%">
           <thead>
             <th>Gender</th>

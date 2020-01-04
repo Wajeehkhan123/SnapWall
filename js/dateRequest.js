@@ -6,6 +6,10 @@ $(document).ready(function () {
     var o="";
     var lockFlag = true;
     var objectDropZone;
+    var allRequests = [];
+    var completeRequests = [];
+    var newRequests = [];
+    var inProgressRequests = [];
 
     // Date Request page
 
@@ -94,15 +98,54 @@ var userId;
     var selectHtml = "";
 
     if(status == "new" || status == "New"){
-
-        selectHtml = '<select class="form-control" id="statusId"><<option selected value='+status+'>'+status+'</option><option value="in progress">in progress</option><option value="complete">complete</option></select>';
+        newRequests.push({
+            gender: gender,
+            description: desc,
+            date: date,
+            contact: contact,
+            age: age,
+            id: id,
+            userId: userId,
+            status: status
+        });
+        selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="complete">complete</option></select>';
     }
     else if(status == "in progress" || status == "In progress"){
-        selectHtml = '<select class="form-control" id="statusId"><option selected value='+status+'>'+status+'</option><option value="new">new</option><option value="complete">complete</option></select>';
+        inProgressRequests.push({
+            gender: gender,
+            description: desc,
+            date: date,
+            contact: contact,
+            age: age,
+            id: id,
+            userId: userId,
+            status: status
+        });
+        selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="new">new</option><option value="complete">complete</option></select>';
     }
     else if(status == "complete" || status == "Complete"){
-        selectHtml = '<select class="form-control" id="statusId"><option selected value='+status+'>'+status+'</option><option value="in progress">in progress</option><option value="new">new</option></select>';
+        completeRequests.push({
+            gender: gender,
+            description: desc,
+            date: date,
+            contact: contact,
+            age: age,
+            id: id,
+            userId: userId,
+            status: status
+        });
+        selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="new">new</option></select>';
     }
+    allRequests.push({
+        gender: gender,
+        description: desc,
+        date: date,
+        contact: contact,
+        age: age,
+        id: id,
+        userId: userId,
+        status: status
+    });
 
    $("#requests").DataTable().row.add([
           gender,
@@ -119,6 +162,860 @@ var userId;
 
 });
 
+//status filter
+$('#filterStatus').on('change', function(){
+
+    var statusValue = $('#filterStatus').val();
+
+    if(statusValue == "All"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+        
+                gender = snap.child("gender").val();
+                desc = snap.child("description").val();
+                date = snap.child("dateCreated").val();
+                contact = snap.child("contact").val();
+                age = snap.child("age").val();
+                id = snap.child("id").val();
+                userId = snap.child("userId").val();
+                status = snap.child("status").val();
+             
+            if(gender == null)
+            {
+                gender = "NA";
+            }
+            if(date == null)
+            {
+                date = "NA";
+            }
+            if(desc == null)
+            {
+                desc = "NA";
+            }
+            if(contact == null)
+            {
+                contact = "NA";
+            }
+            if(id == null)
+            {
+                id = "NA";
+            }
+            if(userId == null)
+            {
+                userId = "NA";
+            }
+            if(age == null || age == "")
+            {
+                age = "NA";
+            }
+            if(status == null)
+            {
+                age = "NA";
+            }
+        
+            var selectHtml = "";
+        
+            if(status == "new" || status == "New"){
+                selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="complete">complete</option></select>';
+            }
+            else if(status == "in progress" || status == "In progress"){
+                selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="new">new</option><option value="complete">complete</option></select>';
+            }
+            else if(status == "complete" || status == "Complete"){
+                selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="new">new</option></select>';
+            }
+            
+           $("#requests").DataTable().row.add([
+                  gender,
+                  desc,
+                  date,
+                  contact,
+                  age,
+                  selectHtml,
+                  '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                  id,
+                  userId
+        
+            ]).draw();
+
+        });   
+
+    }
+
+    else  if(statusValue == "new"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().draw();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+
+                if(snap.child("status").val() == "new"){
+                    gender = snap.child("gender").val();
+                    desc = snap.child("description").val();
+                    date = snap.child("dateCreated").val();
+                    contact = snap.child("contact").val();
+                    age = snap.child("age").val();
+                    id = snap.child("id").val();
+                    userId = snap.child("userId").val();
+                    status = snap.child("status").val();
+                 
+                if(gender == null)
+                {
+                    gender = "NA";
+                }
+                if(date == null)
+                {
+                    date = "NA";
+                }
+                if(desc == null)
+                {
+                    desc = "NA";
+                }
+                if(contact == null)
+                {
+                    contact = "NA";
+                }
+                if(id == null)
+                {
+                    id = "NA";
+                }
+                if(userId == null)
+                {
+                    userId = "NA";
+                }
+                if(age == null || age == "")
+                {
+                    age = "NA";
+                }
+                if(status == null)
+                {
+                    age = "NA";
+                }
+            
+                var selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="complete">complete</option></select>';
+                
+               $("#requests").DataTable().row.add([
+                      gender,
+                      desc,
+                      date,
+                      contact,
+                      age,
+                      selectHtml,
+                      '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                      id,
+                      userId
+            
+                ]).draw();
+                }
+        });       
+    }
+
+    else  if(statusValue == "complete"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().draw();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+
+                if(snap.child("status").val() == "complete"){
+                    gender = snap.child("gender").val();
+                    desc = snap.child("description").val();
+                    date = snap.child("dateCreated").val();
+                    contact = snap.child("contact").val();
+                    age = snap.child("age").val();
+                    id = snap.child("id").val();
+                    userId = snap.child("userId").val();
+                    status = snap.child("status").val();
+                 
+                if(gender == null)
+                {
+                    gender = "NA";
+                }
+                if(date == null)
+                {
+                    date = "NA";
+                }
+                if(desc == null)
+                {
+                    desc = "NA";
+                }
+                if(contact == null)
+                {
+                    contact = "NA";
+                }
+                if(id == null)
+                {
+                    id = "NA";
+                }
+                if(userId == null)
+                {
+                    userId = "NA";
+                }
+                if(age == null || age == "")
+                {
+                    age = "NA";
+                }
+                if(status == null)
+                {
+                    age = "NA";
+                }
+            
+                var selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="new">new</option></select>';
+                
+               $("#requests").DataTable().row.add([
+                      gender,
+                      desc,
+                      date,
+                      contact,
+                      age,
+                      selectHtml,
+                      '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                      id,
+                      userId
+            
+                ]).draw();
+                }
+        });       
+    }
+
+    else  if(statusValue == "in progress"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().draw();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+
+                if(snap.child("status").val() == "in progress"){
+                    gender = snap.child("gender").val();
+                    desc = snap.child("description").val();
+                    date = snap.child("dateCreated").val();
+                    contact = snap.child("contact").val();
+                    age = snap.child("age").val();
+                    id = snap.child("id").val();
+                    userId = snap.child("userId").val();
+                    status = snap.child("status").val();
+                 
+                if(gender == null)
+                {
+                    gender = "NA";
+                }
+                if(date == null)
+                {
+                    date = "NA";
+                }
+                if(desc == null)
+                {
+                    desc = "NA";
+                }
+                if(contact == null)
+                {
+                    contact = "NA";
+                }
+                if(id == null)
+                {
+                    id = "NA";
+                }
+                if(userId == null)
+                {
+                    userId = "NA";
+                }
+                if(age == null || age == "")
+                {
+                    age = "NA";
+                }
+                if(status == null)
+                {
+                    age = "NA";
+                }
+            
+                var selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="new">new</option><option value="complete">complete</option></select>';
+                
+               $("#requests").DataTable().row.add([
+                      gender,
+                      desc,
+                      date,
+                      contact,
+                      age,
+                      selectHtml,
+                      '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                      id,
+                      userId
+            
+                ]).draw();
+                }
+        });       
+    }
+
+});
+
+function checkStatus(){
+
+    var statusValue = $('#filterStatus').val();
+
+    if(statusValue == "All"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+        
+                gender = snap.child("gender").val();
+                desc = snap.child("description").val();
+                date = snap.child("dateCreated").val();
+                contact = snap.child("contact").val();
+                age = snap.child("age").val();
+                id = snap.child("id").val();
+                userId = snap.child("userId").val();
+                status = snap.child("status").val();
+             
+            if(gender == null)
+            {
+                gender = "NA";
+            }
+            if(date == null)
+            {
+                date = "NA";
+            }
+            if(desc == null)
+            {
+                desc = "NA";
+            }
+            if(contact == null)
+            {
+                contact = "NA";
+            }
+            if(id == null)
+            {
+                id = "NA";
+            }
+            if(userId == null)
+            {
+                userId = "NA";
+            }
+            if(age == null || age == "")
+            {
+                age = "NA";
+            }
+            if(status == null)
+            {
+                age = "NA";
+            }
+        
+            var selectHtml = "";
+        
+            if(status == "new" || status == "New"){
+                selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="complete">complete</option></select>';
+            }
+            else if(status == "in progress" || status == "In progress"){
+                selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="new">new</option><option value="complete">complete</option></select>';
+            }
+            else if(status == "complete" || status == "Complete"){
+                selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="new">new</option></select>';
+            }
+            
+           $("#requests").DataTable().row.add([
+                  gender,
+                  desc,
+                  date,
+                  contact,
+                  age,
+                  selectHtml,
+                  '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                  id,
+                  userId
+        
+            ]).draw();
+
+        });   
+
+    }
+
+    else  if(statusValue == "new"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().draw();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+
+                if(snap.child("status").val() == "new"){
+                    gender = snap.child("gender").val();
+                    desc = snap.child("description").val();
+                    date = snap.child("dateCreated").val();
+                    contact = snap.child("contact").val();
+                    age = snap.child("age").val();
+                    id = snap.child("id").val();
+                    userId = snap.child("userId").val();
+                    status = snap.child("status").val();
+                 
+                if(gender == null)
+                {
+                    gender = "NA";
+                }
+                if(date == null)
+                {
+                    date = "NA";
+                }
+                if(desc == null)
+                {
+                    desc = "NA";
+                }
+                if(contact == null)
+                {
+                    contact = "NA";
+                }
+                if(id == null)
+                {
+                    id = "NA";
+                }
+                if(userId == null)
+                {
+                    userId = "NA";
+                }
+                if(age == null || age == "")
+                {
+                    age = "NA";
+                }
+                if(status == null)
+                {
+                    age = "NA";
+                }
+            
+                var selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="complete">complete</option></select>';
+                
+               $("#requests").DataTable().row.add([
+                      gender,
+                      desc,
+                      date,
+                      contact,
+                      age,
+                      selectHtml,
+                      '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                      id,
+                      userId
+            
+                ]).draw();
+                }
+        });       
+    }
+
+    else  if(statusValue == "complete"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().draw();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+
+                if(snap.child("status").val() == "complete"){
+                    gender = snap.child("gender").val();
+                    desc = snap.child("description").val();
+                    date = snap.child("dateCreated").val();
+                    contact = snap.child("contact").val();
+                    age = snap.child("age").val();
+                    id = snap.child("id").val();
+                    userId = snap.child("userId").val();
+                    status = snap.child("status").val();
+                 
+                if(gender == null)
+                {
+                    gender = "NA";
+                }
+                if(date == null)
+                {
+                    date = "NA";
+                }
+                if(desc == null)
+                {
+                    desc = "NA";
+                }
+                if(contact == null)
+                {
+                    contact = "NA";
+                }
+                if(id == null)
+                {
+                    id = "NA";
+                }
+                if(userId == null)
+                {
+                    userId = "NA";
+                }
+                if(age == null || age == "")
+                {
+                    age = "NA";
+                }
+                if(status == null)
+                {
+                    age = "NA";
+                }
+            
+                var selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="in progress">in progress</option><option value="new">new</option></select>';
+                
+               $("#requests").DataTable().row.add([
+                      gender,
+                      desc,
+                      date,
+                      contact,
+                      age,
+                      selectHtml,
+                      '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                      id,
+                      userId
+            
+                ]).draw();
+                }
+        });       
+    }
+
+    else  if(statusValue == "in progress"){
+
+        $("#requests").DataTable().clear();
+        $("#requests").DataTable().draw();
+        $("#requests").DataTable().destroy();
+
+        $('#requests').DataTable( {
+            "language": {
+                "emptyTable": "No data available...."
+              },
+            responsive: {
+               details: {
+                   type: 'column'
+               }
+           },
+           columnDefs: [
+            {
+                targets: [ 7 ],
+                visible: false,
+                searchable: false
+            },
+            {
+                targets: [ 8 ],
+                visible: false,
+                searchable: false
+            }
+           ]
+    } );
+
+        var gender;
+        var desc;
+        var date;
+        var contact;
+        var age;
+        var status;
+        var id;
+        var userId;
+        
+            var rootRequestsRef = firebase.database().ref().child("dateRequests");
+        
+            rootRequestsRef.on("child_added", snap => {
+
+                if(snap.child("status").val() == "in progress"){
+                    gender = snap.child("gender").val();
+                    desc = snap.child("description").val();
+                    date = snap.child("dateCreated").val();
+                    contact = snap.child("contact").val();
+                    age = snap.child("age").val();
+                    id = snap.child("id").val();
+                    userId = snap.child("userId").val();
+                    status = snap.child("status").val();
+                 
+                if(gender == null)
+                {
+                    gender = "NA";
+                }
+                if(date == null)
+                {
+                    date = "NA";
+                }
+                if(desc == null)
+                {
+                    desc = "NA";
+                }
+                if(contact == null)
+                {
+                    contact = "NA";
+                }
+                if(id == null)
+                {
+                    id = "NA";
+                }
+                if(userId == null)
+                {
+                    userId = "NA";
+                }
+                if(age == null || age == "")
+                {
+                    age = "NA";
+                }
+                if(status == null)
+                {
+                    age = "NA";
+                }
+            
+                var selectHtml = '<select style="border: 2px solid #ec0b43; padding: 4px; font-weight: 600;" class="form-control" id="statusId"><option selected value='+status+'><strong>'+status+'</strong></option><option value="new">new</option><option value="complete">complete</option></select>';
+                
+               $("#requests").DataTable().row.add([
+                      gender,
+                      desc,
+                      date,
+                      contact,
+                      age,
+                      selectHtml,
+                      '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
+                      id,
+                      userId
+            
+                ]).draw();
+                }
+        });       
+    }
+}
+
 //updating status
 $('#requests').on('change', 'tbody #statusId', function (){
 
@@ -130,11 +1027,11 @@ $('#requests').on('change', 'tbody #statusId', function (){
     
     if(rowname=="child")
     {			  
-        row_data = table.row($(this).parents('tr').prev('tr')).data();
+        row_data = $("#requests").DataTable().row($(this).parents('tr').prev('tr')).data();
     }
     else
     {
-        row_data = table.row($(this).closest('tr')).data();
+        row_data = $("#requests").DataTable().row($(this).closest('tr')).data();
     }
 
     var requestStatus = $(this).val();
@@ -153,6 +1050,9 @@ $('#requests').on('change', 'tbody #statusId', function (){
     .then(function() {
         swal({title: "Updated", text: "Status updated!", type: "success"}).catch(function(){
             swal({ title: "Error!", text: "Error in updating the status!", type: "error" });
+        }).then(function() {
+            //location.reload();
+            checkStatus();
         });
     });
 
@@ -178,7 +1078,7 @@ $('#requests').on('click', 'tbody .viewBtn', function () {
 
     if(rowname=="child")
     {			  
-        row_data = table.row($(this).parents('tr').prev('tr')).data();
+        row_data = $("#requests").DataTable().row($(this).parents('tr').prev('tr')).data();
         gender = row_data[0];
         desc = row_data[1];
         date = row_data[2];
@@ -190,7 +1090,7 @@ $('#requests').on('click', 'tbody .viewBtn', function () {
     }
     else
     {
-        row_data = table.row($(this).closest('tr')).data();
+        row_data = $("#requests").DataTable().row($(this).closest('tr')).data();
         gender = row_data[0];
         desc = row_data[1];
         date = row_data[2];
