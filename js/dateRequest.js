@@ -91,18 +91,70 @@ var userId;
         age = "NA";
     }
 
+    var selectHtml = "";
+
+    if(status == "new" || status == "New"){
+
+        selectHtml = '<select class="form-control" id="statusId"><<option selected value='+status+'>'+status+'</option><option value="in progress">in progress</option><option value="complete">complete</option></select>';
+    }
+    else if(status == "in progress" || status == "In progress"){
+        selectHtml = '<select class="form-control" id="statusId"><option selected value='+status+'>'+status+'</option><option value="new">new</option><option value="complete">complete</option></select>';
+    }
+    else if(status == "complete" || status == "Complete"){
+        selectHtml = '<select class="form-control" id="statusId"><option selected value='+status+'>'+status+'</option><option value="in progress">in progress</option><option value="new">new</option></select>';
+    }
+
    $("#requests").DataTable().row.add([
           gender,
           desc,
           date,
           contact,
           age,
-          status,
-          '<div class="text-center"><button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i></button><button type="button" style="margin:5px; color:white;" class="btn btn-warning btn-sm editBtn"><i class="fas fa-edit"></i></button></div>',
+          selectHtml,
+          '<button type="button" style="margin:5px; background-color:#ec0b43;color:white;" class="btn btn-sm viewBtn"><i class="fas fa-eye"></i> User</button>',
           id,
           userId
 
     ]).draw();
+
+});
+
+//updating status
+$('#requests').on('change', 'tbody #statusId', function (){
+
+    var row_data;
+
+    var requestReference = firebase.database().ref().child("dateRequests");
+
+    var rowname=$(this).parents('tr').attr('class');
+    
+    if(rowname=="child")
+    {			  
+        row_data = table.row($(this).parents('tr').prev('tr')).data();
+    }
+    else
+    {
+        row_data = table.row($(this).closest('tr')).data();
+    }
+
+    var requestStatus = $(this).val();
+    var requestId = row_data[7];
+
+    if(requestStatus == "in" || requestStatus == "In"){
+        requestStatus = "in progress";
+    }
+    
+    //console.log(requestStatus);
+    //console.log(requestId);
+
+    requestReference.child(requestId).update({ 
+        status: requestStatus
+    })
+    .then(function() {
+        swal({title: "Updated", text: "Status updated!", type: "success"}).catch(function(){
+            swal({ title: "Error!", text: "Error in updating the status!", type: "error" });
+        });
+    });
 
 });
 
